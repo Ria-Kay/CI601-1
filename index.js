@@ -7,14 +7,24 @@ window.addEventListener("load", function () {
         const nofounderror = document.querySelector("#nofounderror");
         const error = document.querySelector("#error");
 
-        // Show loading indicator
-        loading.style.display = "block";
-
-        // Clear any previous results
+        // Clear previous errors and results
+        nofounderror.style.display = "none";
+        error.style.display = "none";
         const target = document.querySelector("#srchtarget");
         while (target.lastChild) {
             target.removeChild(target.lastChild);
         }
+
+        // Prevent empty search queries
+        if (!query) {
+            loading.style.display = "none";
+            nofounderror.style.display = "block";
+            nofounderror.textContent = "Please enter a valid search query.";
+            return;
+        }
+
+        // Show loading indicator
+        loading.style.display = "block";
 
         // Fetch data from server-side proxy
         fetch(`/api/comicvine?query=${encodeURIComponent(query)}`, {
@@ -36,7 +46,7 @@ window.addEventListener("load", function () {
                     const gridContainer = document.createElement("div");
                     gridContainer.classList.add("grid-container");
 
-                    issues.forEach((issue) => {
+                    issues.slice(0, 20).forEach((issue) => { // Limit to 20 results
                         const gridItem = document.createElement("div");
                         gridItem.classList.add("grid-item");
 
@@ -86,12 +96,14 @@ window.addEventListener("load", function () {
                     target.appendChild(gridContainer);
                 } else {
                     nofounderror.style.display = "block";
+                    nofounderror.textContent = "No issues found. Try a different search query.";
                 }
             })
             .catch((err) => {
                 console.error("Error:", err.message);
                 loading.style.display = "none";
                 error.style.display = "block";
+                error.textContent = "Failed to fetch data. Please try again later.";
             });
     });
 });

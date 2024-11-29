@@ -27,7 +27,7 @@ window.addEventListener("load", function () {
         loading.style.display = "block";
 
         // Fetch data from server-side proxy
-        fetch(`/api/proxy?query=${encodeURIComponent(query)}`, {
+        fetch(`pages/api/proxy?query=${encodeURIComponent(query)}`, {
             method: 'GET',
             credentials: 'omit', // Prevent cookies from being sent
         })

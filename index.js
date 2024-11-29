@@ -6,11 +6,11 @@ window.addEventListener("load", function () {
         const loading = document.querySelector("#loading");
         const nofounderror = document.querySelector("#nofounderror");
         const error = document.querySelector("#error");
+        const target = document.querySelector("#srchtarget");
 
-        // Clear previous errors and results
+        // Clear previous results and errors
         nofounderror.style.display = "none";
         error.style.display = "none";
-        const target = document.querySelector("#srchtarget");
         while (target.lastChild) {
             target.removeChild(target.lastChild);
         }
@@ -23,15 +23,13 @@ window.addEventListener("load", function () {
             return;
         }
 
-       
-
         // Show loading indicator
         loading.style.display = "block";
 
         // Fetch data from server-side proxy
         fetch(`/api/proxy?query=${encodeURIComponent(query)}`, {
-            method: 'GET',
-            credentials: 'omit', // Prevent cookies from being sent
+            method: "GET",
+            credentials: "omit", // Prevent cookies from being sent
         })
             .then((response) => {
                 loading.style.display = "none"; // Hide loading indicator
@@ -42,40 +40,85 @@ window.addEventListener("load", function () {
                 }
             })
             .then((response) => {
-                const issues = response.results || []; // The issues array
+                const items = response.results || []; // Use `items` to store results
 
-                if (issues.length > 0) {
+                if (items.length > 0) {
                     const gridContainer = document.createElement("div");
                     gridContainer.classList.add("grid-container");
 
-                    issues.slice(0, 20).forEach((issue) => { // Limit to 20 results
+                    // Process each item (limit to 20 results)
+                    items.slice(0, 20).forEach((item) => {
                         const gridItem = document.createElement("div");
                         gridItem.classList.add("grid-item");
 
                         const img = document.createElement("img");
                         const info = document.createElement("div");
                         const title = document.createElement("p");
-                        const time = document.createElement("time");
+                        const subtitle = document.createElement("p");
                         const desc = document.createElement("p");
 
-                        // Add issue image if available
-                        img.src = issue.image ? issue.image.small_url : "placeholder.jpg";
+                        // Image
+                        img.src = item.image?.small_url || "placeholder.jpg";
+                        img.alt = item.name || "Issue Image";
 
-                        // Add issue metadata
-                        title.textContent = issue.name || "Unnamed Issue";
-                        time.textContent = `Release Date: ${issue.cover_date || "Unknown"}`;
-                        desc.textContent = issue.description || "No description available.";
+                        // Title
+                        title.textContent = item.name || "Unnamed Issue";
 
+                        // Subtitle: Issue Number and Cover Date
+                        const issueNumber = item.issue_number ? `#${item.issue_number}` : "Unknown Issue Number";
+                        const coverDate = item.cover_date || "Unknown Cover Date";
+                        subtitle.textContent = `Issue ${issueNumber}, Cover Date: ${coverDate}`;
+
+                        // Description
+                        desc.textContent = item.description || "No description available.";
+
+                        // Add optional fields like volume and first appearances
+                        const optionalInfo = document.createElement("div");
+
+                        // Volume
+                        if (item.volume?.name) {
+                            const volumeInfo = document.createElement("p");
+                            volumeInfo.textContent = `Volume: ${item.volume.name}`;
+                            optionalInfo.appendChild(volumeInfo);
+                        }
+
+                        // First Appearance Characters
+                        if (item.first_appearance_characters?.length > 0) {
+                            const characters = item.first_appearance_characters.map((char) => char.name).join(", ");
+                            const charInfo = document.createElement("p");
+                            charInfo.textContent = `First Appearance Characters: ${characters}`;
+                            optionalInfo.appendChild(charInfo);
+                        }
+
+                        // First Appearance Teams
+                        if (item.first_appearance_teams?.length > 0) {
+                            const teams = item.first_appearance_teams.map((team) => team.name).join(", ");
+                            const teamInfo = document.createElement("p");
+                            teamInfo.textContent = `First Appearance Teams: ${teams}`;
+                            optionalInfo.appendChild(teamInfo);
+                        }
+
+                        // Story Arcs
+                        if (item.story_arc_credits?.length > 0) {
+                            const arcs = item.story_arc_credits.map((arc) => arc.name).join(", ");
+                            const arcsInfo = document.createElement("p");
+                            arcsInfo.textContent = `Story Arcs: ${arcs}`;
+                            optionalInfo.appendChild(arcsInfo);
+                        }
+
+                        // Build info block
                         info.classList.add("info");
                         info.appendChild(title);
-                        info.appendChild(time);
+                        info.appendChild(subtitle);
                         info.appendChild(desc);
+                        info.appendChild(optionalInfo);
 
+                        // Add elements to grid item
                         gridItem.appendChild(img);
                         gridItem.appendChild(info);
                         gridContainer.appendChild(gridItem);
 
-                        // Add click event to show detailed view
+                        // Add click event to display detailed view
                         img.addEventListener("click", () => {
                             const imgselected = document.querySelector("#imgselected");
                             imgselected.appendChild(info);
@@ -84,26 +127,28 @@ window.addEventListener("load", function () {
                             img.style.width = "80%";
                             info.scrollIntoView();
                         });
-
-                        // Add "back" button functionality
-                        const back = document.querySelector("#back");
-                        back.addEventListener("click", () => {
-                            const imgselected = document.querySelector("#imgselected");
-                            imgselected.style.display = "none";
-                            info.style.display = "block";
-                            gridItem.appendChild(img);
-                        });
                     });
 
+                    // Append the grid container to the target
                     target.appendChild(gridContainer);
                 } else {
                     nofounderror.style.display = "block";
+                    nofounderror.textContent = "No issues found. Try a different search query.";
                 }
             })
             .catch((err) => {
                 console.error("Error:", err.message);
                 loading.style.display = "none";
                 error.style.display = "block";
+                error.textContent = "Failed to fetch data. Please try again.";
             });
+    });
+
+    // Add "back" button functionality
+    const back = document.querySelector("#back");
+    back.addEventListener("click", () => {
+        const imgselected = document.querySelector("#imgselected");
+        imgselected.style.display = "none";
+        imgselected.innerHTML = ""; // Clear the detailed view
     });
 });

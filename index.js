@@ -96,14 +96,12 @@ window.addEventListener("load", function () {
                     target.appendChild(gridContainer);
                 } else {
                     nofounderror.style.display = "block";
-                    nofounderror.textContent = "No issues found. Try a different search query.";
                 }
             })
             .catch((err) => {
                 console.error("Error:", err.message);
                 loading.style.display = "none";
                 error.style.display = "block";
-                error.textContent = "Failed to fetch data. Please try again later.";
             });
     });
 });

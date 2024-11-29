@@ -10,7 +10,8 @@ export default async function handler(req, res) {
 
     //  API 
     const API_KEY = "de2d10e13b5fca21fdf1b9c321676937e104e57b"; // API key
-    const API_URL = `https://comicvine.gamespot.com/api/search/?api_key=${API_KEY}&format=json&sort=name:asc&resources=issue&query=${query}`;
+    //const API_URL = `https://comicvine.gamespot.com/api/search/?api_key=${API_KEY}&format=json&sort=name:asc&resources=issue&query=${query}`;
+    const API_URL = `https://comicvine.gamespot.com/api/search/?api_key=${API_KEY}&format=json&query=${query}`;
 
     try {
         // Fetch data from the ComicVine API

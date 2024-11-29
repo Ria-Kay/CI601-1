@@ -17,9 +17,11 @@ window.addEventListener("load", function () {
         }
 
         // Fetch data from server-side proxy
-        fetch(`/api/comicvine?query=${encodeURIComponent(query)}`)
-                method: 'GET',
-                credentials: 'omit', // Prevent cookies from being sent
+   fetch(`/api/comicvine?query=${encodeURIComponent(query)}`, {
+    method: 'GET',
+    credentials: 'omit',
+})
+
             .then((response) => {
                 loading.style.display = "none"; // Hide loading indicator
                 if (response.ok) {

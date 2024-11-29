@@ -23,11 +23,7 @@ window.addEventListener("load", function () {
             return;
         }
 
-            // Ensure all elements are found
-    if (!form || !queryInput || !loading || !nofounderror || !error || !target || !back || !imgselected) {
-        console.error("One or more required DOM elements are missing.");
-        return;
-    }
+       
 
         // Show loading indicator
         loading.style.display = "block";

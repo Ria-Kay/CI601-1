@@ -1,17 +1,15 @@
 import axios from "axios";
 
 export default async function handler(req, res) {
-    const { query } = req.query; // Extract the 'query' parameter
+    const { query, limit = 10, offset = 0 } = req.query; // Extract query, limit, and offset parameters
 
     if (!query) {
         res.status(400).json({ error: "Query parameter is required." });
         return;
     }
 
-    //  API 
     const API_KEY = "de2d10e13b5fca21fdf1b9c321676937e104e57b"; // API key
-    //const API_URL = `https://comicvine.gamespot.com/api/search/?api_key=${API_KEY}&format=json&sort=name:asc&resources=issue&query=${query}`;
-    const API_URL = `https://comicvine.gamespot.com/api/search/?api_key=${API_KEY}&format=json&query=${query}`;
+    const API_URL = `https://comicvine.gamespot.com/api/search/?api_key=${API_KEY}&format=json&resources=issue&query=${query}&limit=${limit}&offset=${offset}`;
 
     try {
         // Fetch data from the ComicVine API

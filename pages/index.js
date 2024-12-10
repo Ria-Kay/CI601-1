@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Header from '../components/Header';
+import ComicHunt from '../components/comichunt'; // Import the ComicHunt logo component :D
 
 export default function Home() {
     const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ export default function Home() {
         }
 
         try {
-            const response = await fetch(`/api/proxy?query=${encodeURIComponent(query)}`);
+            const response = await fetch(`/api/proxy?query=${encodeURIComponent(query)}&limit=80`); // Fetch up to 80 results
             if (!response.ok) throw new Error('Failed to fetch data');
             const data = await response.json();
             if (!data.results || data.results.length === 0) {
@@ -40,30 +42,12 @@ export default function Home() {
 
     return (
         <div>
-            <header>
-                <h1>Search for Comics</h1>
-            </header>
+            <ComicHunt />
+            <Header handleSearch={handleSearch} />
 
             <main>
                 <div id="imgselected" style={{ display: 'none' }}>
                     <button id="back">X</button>
-                </div>
-
-                <div className="searchbar">
-                    <form id="form" onSubmit={handleSearch}>
-                        <input
-                            type="search"
-                            className="search"
-                            name="query"
-                            placeholder="Search for Comic Data..."
-                        />
-                        <input
-                            type="submit"
-                            className="submit"
-                            id="submit"
-                            value="Search"
-                        />
-                    </form>
                 </div>
 
                 {loading && (
@@ -90,13 +74,31 @@ export default function Home() {
                     <div className="grid-container">
                         {results.map((item, index) => (
                             <div key={index} className="grid-item">
+                                {/* Display comic cover */}
                                 {item.image?.small_url && (
                                     <img
                                         src={item.image.small_url}
-                                        alt={item.name || 'Comic Image'}
+                                        alt={
+                                            item.name ||
+                                            `${item.volume?.name || 'Unknown Series'} #${item.issue_number || 'Unknown'}`
+                                        }
                                     />
                                 )}
-                                <h2>{item.name || 'Unknown Title'}</h2>
+
+                                {/* Display fallback */}
+                                <h2>
+                                    <a
+                                        href={item.site_detail_url || '#'}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {item.name
+                                            ? item.name
+                                            : `${item.volume?.name || 'Unknown Series'} #${item.issue_number || 'Unknown'}`}
+                                    </a>
+                                </h2>
+
+                                {/* Display description */}
                                 {item.description ? (
                                     <div
                                         className="description"

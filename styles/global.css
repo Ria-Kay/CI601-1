@@ -9,3 +9,109 @@ body{
     background-color: #151321;
 
 }
+header {
+    width: 45%; /* Keep the header width at 45% */
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between; /* Align navigation left and search right */
+    align-items: center; /* Vertically align items */
+    position: absolute; /* Place header in the top-right corner */
+    top: 0;
+    right: 0;
+    background-color: #1c1a29; /* Optional: background for better visibility */
+    border-radius: 8px; /* Optional: rounded corners */
+    z-index: 1000;
+}
+
+/* Navigation styles */
+.navigation {
+    display: flex; /* Lay out links horizontally */
+    gap: 1.5rem; /* Add space between navigation links */
+}
+
+.navigation a {
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping might be archaic now with next having sum changes to using an a tag, check if it actually reads */
+}
+
+.navigation a:hover {
+    color: #0070f3; /* Hover effect */
+}
+
+/* Search bar styles */
+.searchbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Add space between input and button */
+    width: 100%;
+    max-width: 300px; /* Limit the width of the search bar */
+}
+
+.searchbar input[type="search"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%; /* Input takes full width of its container */
+}
+
+.searchbar input[type="submit"] {
+    padding: 0.5rem 1rem;
+    background-color: #0070f3;
+    color: aliceblue;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.searchbar input[type="submit"]:hover {
+    background-color: #005bb5;
+}
+.searchbar button {
+    background-color: transparent; /* Remove default styling */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor for clickable button */
+    padding: 0; /* Remove padding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchbar button img {
+    width: 20px; /* Icon size */
+    height: 20px;
+    filter: invert(100%); /* Makes icon white if it's dark */
+    transition: transform 0.3s ease;
+}
+
+.searchbar button:hover img {
+    transform: scale(1.2); /* Add slight zoom on hover */
+}
+
+.logoContainer{
+
+    align-items: left;
+}
+
+.logoContainer {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+
+.logoContainer img {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logoContainer img:hover {
+    transform: scale(1.1);
+}

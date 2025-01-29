@@ -34,3 +34,4 @@ package-lock.json
 .next/cache/webpack/server-development/index.pack.gz.old
 .next/server/pages-manifest.json
 .next/static/chunks/webpack.js
+.vercel

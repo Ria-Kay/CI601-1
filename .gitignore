@@ -18,9 +18,19 @@ package-lock.json
 # ignore environment files
 .env
 .env.local
-
+.next
 # ignore compiled code
 *.class
 *.pyc
 *.o
 .next/trace
+.next/trace
+.next/cache/webpack/client-development/0.pack.gz
+.next/cache/webpack/client-development/index.pack.gz
+
+.next/cache/webpack/client-development/1.pack.gz
+.next/cache/webpack/client-development/0.pack.gz
+.next/cache/webpack/server-development/index.pack.gz
+.next/cache/webpack/server-development/index.pack.gz.old
+.next/server/pages-manifest.json
+.next/static/chunks/webpack.js

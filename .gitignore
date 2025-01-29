@@ -13,7 +13,7 @@ package-lock.json
 *.log
 .next
 
-.next
+.next/
 #should ignore next????
 # ignore environment files
 .env

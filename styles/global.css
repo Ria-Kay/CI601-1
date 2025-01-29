@@ -24,12 +24,13 @@ header {
 }
 
 /* Navigation styles */
-.navigation {
+.headerbox {
     display: flex; /* Lay out links horizontally */
     gap: 1.5rem; /* Add space between navigation links */
+    padding-bottom: 0.1em;
 }
 
-.navigation a {
+.headerbox a {
     color: aliceblue;
     text-decoration: none;
     font-size: 1rem;
@@ -43,50 +44,44 @@ header {
 
 /* Search bar styles */
 .searchbar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Add space between input and button */
+    display: flex; /* Keep input and button aligned */
+    align-items: center; /* Vertical alignment */
+    justify-content: center; /* Centers the search bar itself */
     width: 100%;
-    max-width: 300px; /* Limit the width of the search bar */
+    max-width: 400px; /* Adjust as needed */
+    margin: 0 auto; /* Center horizontally */
+    background-color: transparent; /* Remove white box background */
+    border: none; /* Ensure no unwanted borders around the container */
 }
 
 .searchbar input[type="search"] {
-    padding: 0.5rem;
+    flex: 1; /* Let the input take most of the space */
+    padding: 10px 12px;
+    font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: 100%; /* Input takes full width of its container */
+    border-radius: 5px 0 0 5px; /* Rounded left corners only */
+    outline: none;
+    background-color: #1c1a29; /* Matches background for seamless look */
+    color: aliceblue; /* Text color */
 }
 
-.searchbar input[type="submit"] {
-    padding: 0.5rem 1rem;
-    background-color: #0070f3;
-    color: aliceblue;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.searchbar input[type="submit"]:hover {
-    background-color: #005bb5;
-}
 .searchbar button {
-    background-color: transparent; /* Remove default styling */
-    border: none; /* Remove border */
-    cursor: pointer; /* Pointer cursor for clickable button */
-    padding: 0; /* Remove padding */
+    padding: 0;
+    margin: 0;
+    background-color: transparent; /* Transparent button */
+    border: none; /* No borders around button */
+    border-radius: 0 5px 5px 0; /* Rounded right corners only */
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .searchbar button img {
     width: 20px; /* Icon size */
     height: 20px;
-    filter: invert(100%); /* Makes icon white if it's dark */
-    transition: transform 0.3s ease;
+    filter: invert(100%); /* Make icon white */
+    margin-right: 8px; /* Shift icon slightly to the right */
 }
 
 .searchbar button:hover img {

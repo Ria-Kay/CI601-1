@@ -11,7 +11,7 @@ package-lock.json
 
 # Ignore log files
 *.log
-
+.next
 
 .next
 #should ignore next????
@@ -23,3 +23,4 @@ package-lock.json
 *.class
 *.pyc
 *.o
+.next/trace

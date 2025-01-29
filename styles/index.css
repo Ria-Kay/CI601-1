@@ -96,7 +96,10 @@ img {
     padding: 1rem;
     justify-items: center;
 }
+.grid-container:hover{
+    transform: scale(1.05); /* Slight zoom */
 
+}
 /* Grid Items */
 .grid-item {
     position: relative;
@@ -129,10 +132,13 @@ img {
 .grid-item:hover {
     transform: scale(1.05); /* Slight zoom */
     box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+    width: 200px;
+    height: 400px;
 }
 
 .grid-item:hover img {
-    transform: scale(1.1); /* Zoom image slightly */
+   /* transform: scale(1.1); /* Zoom image slightly */
+   display: hide;
 }
 
 .grid-item:hover h2 {
@@ -156,4 +162,7 @@ img {
 
 .grid-item:hover .description {
     opacity: 1; /* Show description on hover */
+    transform: scale(1.5em);
+
 }
+

@@ -6,3 +6,7 @@ export default function Homep() {
 
 
 }
+
+export async function getServerSideProps() {
+    return { props: {} };
+  }

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Header from '../components/Header';
 import ComicHunt from '../components/comichunt'; // Import the ComicHunt logo component :D
-
+export async function getServerSideProps() {
+    return { props: {} };
+  }
 export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);

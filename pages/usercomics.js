@@ -1,7 +1,9 @@
 import { useState } from 'react';
 // import Header from '../components/Header';
 // import global.css from (fix this import)
-
+export async function getServerSideProps() {
+  return { props: {} };
+}
 function UserComicsPage() {
   const [comics, setComics] = useState([]);
 

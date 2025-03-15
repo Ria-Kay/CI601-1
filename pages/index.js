@@ -10,7 +10,7 @@ export default function Home() {
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        const query = e.target.query.value.trim();
+        const q = e.target.query.value.trim();
 
         setLoading(true);
         setError(false);

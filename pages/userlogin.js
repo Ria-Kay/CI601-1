@@ -1,7 +1,5 @@
 import { useState } from 'react';
-export async function getServerSideProps() {
-  return { props: {} };
-}
+
 function UserLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,3 +32,6 @@ function UserLoginPage() {
 }
 
 export default UserLoginPage;
+export async function getServerSideProps() {
+  return { props: {} };
+}

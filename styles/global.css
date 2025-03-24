@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Roboto+Condensed:ital@0;1&display=swap');
+
+body{
+    font-family: "Roboto Condensed", serif;
+    font-optical-sizing: auto;
+    color: aliceblue;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #151321;
+
+}
+header {
+    width: 45%; /* Keep the header width at 45% */
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between; /* Align navigation left and search right */
+    align-items: center; /* Vertically align items */
+    position: absolute; /* Place header in the top-right corner */
+    top: 0;
+    right: 0;
+    background-color: #1c1a29; /* Optional: background for better visibility */
+    border-radius: 8px; /* Optional: rounded corners */
+    z-index: 1000;
+}
+
+/* Navigation styles */
+.headerbox {
+    display: flex; /* Lay out links horizontally */
+    gap: 1.5rem; /* Add space between navigation links */
+    padding-bottom: 0.1em;
+}
+
+.headerbox a {
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping might be archaic now with next having sum changes to using an a tag, check if it actually reads */
+}
+
+.navigation a:hover {
+    color: #0070f3; /* Hover effect */
+}
+
+/* Search bar styles */
+.searchbar {
+    display: flex; /* Keep input and button aligned */
+    align-items: center; /* Vertical alignment */
+    justify-content: center; /* Centers the search bar itself */
+    width: 100%;
+    max-width: 400px; /* Adjust as needed */
+    margin: 0 auto; /* Center horizontally */
+    background-color: transparent; /* Remove white box background */
+    border: none; /* Ensure no unwanted borders around the container */
+}
+
+.searchbar input[type="search"] {
+    flex: 1; /* Let the input take most of the space */
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px; /* Rounded left corners only */
+    outline: none;
+    background-color: #1c1a29; /* Matches background for seamless look */
+    color: aliceblue; /* Text color */
+}
+
+.searchbar button {
+    padding: 0;
+    margin: 0;
+    background-color: transparent; /* Transparent button */
+    border: none; /* No borders around button */
+    border-radius: 0 5px 5px 0; /* Rounded right corners only */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.searchbar button img {
+    width: 20px; /* Icon size */
+    height: 20px;
+    filter: invert(100%); /* Make icon white */
+    margin-right: 8px; /* Shift icon slightly to the right */
+}
+
+.searchbar button:hover img {
+    transform: scale(1.2); /* Add slight zoom on hover */
+}
+
+.logoContainer{
+
+    align-items: left;
+}
+
+.logoContainer {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+
+.logoContainer img {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logoContainer img:hover {
+    transform: scale(1.1);
+}

@@ -1,0 +1,9 @@
+{
+    "redirects": [
+      { "source": "/", "destination": "/index.html", "permanent": true },
+      { "source": "/home", "destination": "/home.html", "permanent": true },
+      { "source": "/usercomics", "destination": "/usercomics.html", "permanent": true },
+      { "source": "/userlogin", "destination": "/userlogin.html", "permanent": true }
+    ]
+  }
+  

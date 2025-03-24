@@ -1,6 +1,11 @@
 // pages/_app.js
-import '../styles/index.css'; // Adjust the path based on where your CSS file is located
+import '../styles/global.css'; // Import global CSS file
+
+import '../styles/index.css'; // index specific shizz
 
 export default function App({ Component, pageProps }) {
     return <Component {...pageProps} />;
 }
+export async function getServerSideProps() {
+    return { props: {} };
+  }

@@ -1,22 +1,11 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/(.*)\\.html",
-      "status": 404
-    },
-    {
-      "src": "/index.html",
-      "headers": { "Location": "/" },
-      "status": 308
-    }
-  ],
-  "cleanUrls": true,
   "redirects": [
     {
       "source": "/index.html",
       "destination": "/",
       "permanent": true
     }
-  ]
+  ],
+  "cleanUrls": true
 }

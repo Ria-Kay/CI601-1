@@ -1,9 +1,22 @@
 {
-    "redirects": [
-      { "source": "/", "destination": "/index.html", "permanent": true },
-      { "source": "/home", "destination": "/home.html", "permanent": true },
-      { "source": "/usercomics", "destination": "/usercomics.html", "permanent": true },
-      { "source": "/userlogin", "destination": "/userlogin.html", "permanent": true }
-    ]
-  }
-  
+  "version": 2,
+  "routes": [
+    {
+      "src": "/(.*)\\.html",
+      "status": 404
+    },
+    {
+      "src": "/index.html",
+      "headers": { "Location": "/" },
+      "status": 308
+    }
+  ],
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

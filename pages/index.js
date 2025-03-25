@@ -10,14 +10,14 @@ export default function Home() {
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        const q = e.target.query.value.trim();
+        const query = e.target.query.value.trim();
 
         setLoading(true);
         setError(false);
         setNotFound(false);
         setResults([]);
 
-        if (!q) {
+        if (!query) {
             setLoading(false);
             setNotFound(true);
             return;

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Header from '../components/Header';
-import ComicHunt from '../components/comichunt'; // Import the ComicHunt logo component :D
-//query tag??
+import ComicHunt from '../components/comichunt';
+import ComicTile from '../components/comictile';
+
 export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -24,7 +25,7 @@ export default function Home() {
         }
 
         try {
-            const response = await fetch(`/api/proxy?query=${encodeURIComponent(query)}&limit=80`); // Fetch up to 80 results
+            const response = await fetch(`/api/proxy?query=${encodeURIComponent(query)}&limit=80`);
             if (!response.ok) throw new Error('Failed to fetch data');
             const data = await response.json();
             if (!data.results || data.results.length === 0) {
@@ -73,41 +74,7 @@ export default function Home() {
                 <section id="srchtarget">
                     <div className="grid-container">
                         {results.map((item, index) => (
-                            <div key={index} className="grid-item">
-                                {/* Display comic cover */}
-                                {item.image?.small_url && (
-                                    <img
-                                        src={item.image.small_url}
-                                        alt={
-                                            item.name ||
-                                            `${item.volume?.name || 'Unknown Series'} #${item.issue_number || 'Unknown'}`
-                                        }
-                                    />
-                                )}
-
-                                {/* Display fallback */}
-                                <h2>
-                                    <a
-                                        href={item.site_detail_url || '#'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {item.name
-                                            ? item.name
-                                            : `${item.volume?.name || 'Unknown Series'} #${item.issue_number || 'Unknown'}`}
-                                    </a>
-                                </h2>
-
-                                {/* Display description */}
-                                {item.description ? (
-                                    <div
-                                        className="description"
-                                        dangerouslySetInnerHTML={{ __html: item.description }}
-                                    ></div>
-                                ) : (
-                                    <p>No description available.</p>
-                                )}
-                            </div>
+                            <comictile key={index} comic={item} />
                         ))}
                     </div>
                 </section>
@@ -115,6 +82,7 @@ export default function Home() {
         </div>
     );
 }
+
 export async function getServerSideProps() {
     return { props: {} };
-  }
+}

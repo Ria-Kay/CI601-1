@@ -23,11 +23,11 @@ body {
   }
 
 div.home-intro{
-    font-family: 'Boldonse';
+    font-family: "Boldonse", system-ui;
 
 }
 div.issue-adv{
-    font-family: 'geo-regular';
+    font-family: "Geo", sans-serif;
     
 }
 main{

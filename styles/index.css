@@ -1,11 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital@0;1&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Geo:ital@0;1&display=swap');
 body {
     font-family: 'Roboto Condensed', sans-serif;
     background-color: #151321;
     color: rgb(255, 255, 255);
 }
+.geo-regular {
+    font-family: "Geo", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .geo-regular-italic {
+    font-family: "Geo", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .boldonse-regular {
+    font-family: "Boldonse", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
 
+div.home-intro{
+    font-family: 'Boldonse';
+
+}
+div.issue-adv{
+    font-family: 'geo-regular';
+    
+}
+main{
+
+    text-align: center;
+}
 input,
 textarea {
     margin-bottom: 10px;

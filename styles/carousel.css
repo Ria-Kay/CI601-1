@@ -1,0 +1,11 @@
+.carousel {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem;
+  }
+  
+  .carouselTrack {
+    display: flex;
+    gap: 1rem;
+  }
+  

@@ -1,6 +1,7 @@
 import ComicHunt from '../components/comichunt';
 import Header from '../components/Header';
 import Image from 'next/image';
+import LatestComics from '../components/latestcomics';
 
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
 
         <div className= "new-issues">
             <h1> This weeks new issues</h1>
-
+            <LatestComics />
         </div>
       </main>
     </div>

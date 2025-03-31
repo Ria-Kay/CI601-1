@@ -11,8 +11,7 @@ export default function Home() {
       <main>
         <div className="home-intro">
           {/*this will allow for lazy loading so its not as slow when the api will run for issues too*/}
-        <Image src="/images/comichunt.png" alt="ComicHunt logo" width={200} height={80} />
-        <h1>Welcome to ComicHunt </h1>
+          <Image src="/images/comichunt.png" alt="ComicHunt logo" width={200} height={100} />        <h1>Welcome to ComicHunt </h1>
           <p>A Visual Archive For All Your Comcis</p>
         </div>
         <div className= "issue-adv">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import carousel from './carousel';
-import comictile from './comictile';
-
+import Carousel from 'Carousel';
+import ComicTile from 'ComicTile';
 export default function LatestComics() {
   const [comics, setComics] = useState([]);
 
@@ -22,11 +21,11 @@ export default function LatestComics() {
   return (
     <section>
       <h2>This weeks new Issues</h2>
-      <carousel>
+      <Carousel>
         {comics.map((comic, index) => (
-          <comictile key={index} comic={comic} />
+          <ComicTile key={index} comic={comic} />
         ))}
-      </carousel>
+      </Carousel>
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import Carousel from 'Carousel';
-import ComicTile from 'ComicTile';
+import Carousel from './carousel';
+import ComicTile from './comictile';
 export default function LatestComics() {
   const [comics, setComics] = useState([]);
 

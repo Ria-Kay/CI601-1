@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './carousel.module.css';
+import styles from '../styles/carousel.module.css';
  // keep the styling doe all the carosels the same when i call them
  //mext will only allow componetn specificc css if its called module ??
 

@@ -1,43 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Header from '../components/Header';
 import ComicHunt from '../components/comichunt';
-import ComicTile from '../components/comictile';
+import ComicTile from '../components/comictile'; // Uppercase C is critical in imports!
+import styles from '../styles/ComicTile.module.css';
 
-export default function Home() {
+export default function Search() {
+    const router = useRouter();
+    const { q } = router.query;
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [notFound, setNotFound] = useState(false);
     const [results, setResults] = useState([]);
 
-    const handleSearch = async (e) => {
+    useEffect(() => {
+        if (!q) return;
+
+        const fetchComics = async () => {
+            setLoading(true);
+            setError(false);
+            setNotFound(false);
+            setResults([]);
+
+            try {
+                const response = await fetch(`/api/proxy?query=${encodeURIComponent(q)}&limit=80`);
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+                if (!data.results || data.results.length === 0) {
+                    setNotFound(true);
+                } else {
+                    setResults(data.results);
+                }
+            } catch (err) {
+                console.error(err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchComics();
+    }, [q]);
+
+    const handleSearch = (e) => {
         e.preventDefault();
         const query = e.target.query.value.trim();
-
-        setLoading(true);
-        setError(false);
-        setNotFound(false);
-        setResults([]);
-
-        if (!query) {
-            setLoading(false);
-            setNotFound(true);
-            return;
-        }
-
-        try {
-            const response = await fetch(`/api/proxy?query=${encodeURIComponent(query)}&limit=80`);
-            if (!response.ok) throw new Error('Failed to fetch data');
-            const data = await response.json();
-            if (!data.results || data.results.length === 0) {
-                setNotFound(true);
-            } else {
-                setResults(data.results);
-            }
-        } catch (err) {
-            console.error(err);
-            setError(true);
-        } finally {
-            setLoading(false);
+        if (query) {
+            router.push(`/search?q=${encodeURIComponent(query)}`);
         }
     };
 
@@ -47,10 +57,6 @@ export default function Home() {
             <Header handleSearch={handleSearch} />
 
             <main>
-                <div id="imgselected" style={{ display: 'none' }}>
-                    <button id="back">X</button>
-                </div>
-
                 {loading && (
                     <div id="loading">
                         <img src="/images/Ellipsis-1.3s-248px.gif" alt="loading" />
@@ -72,17 +78,13 @@ export default function Home() {
                 )}
 
                 <section id="srchtarget">
-                    <div className="grid-container">
+                <div className="grid-container">
                         {results.map((item, index) => (
-                            <comictile key={index} comic={item} />
+                            <ComicTile key={index} comic={item} />
                         ))}
                     </div>
                 </section>
             </main>
         </div>
     );
-}
-
-export async function getServerSideProps() {
-    return { props: {} };
 }

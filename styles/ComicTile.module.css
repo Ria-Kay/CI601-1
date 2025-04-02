@@ -69,4 +69,74 @@
   .saveBtn:hover {
     background: #444;
   }
+  .popupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
   
+  .popupBox {
+    background-color: #1e1e2f;
+    color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .popupImage {
+    width: 250px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+  
+  .popupInfo {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .popupInfo h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .popupInfo p {
+    font-size: 1rem;
+    line-height: 1.6;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .popupInfo a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #00cfff;
+    text-decoration: underline;
+  }
+  
+  .popupInfo button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #444;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .popupInfo button:hover {
+    background: #666;
+  }
+    

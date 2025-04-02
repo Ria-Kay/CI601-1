@@ -17,7 +17,7 @@ const Header = () => {
         <header>
             <div className='headerbox'>
                 <div className="navigation">
-                    <Link href="/home">Home</Link>
+                    <Link href="/">Home</Link>
                     <Link href="/explore">Explore</Link>
                     <Link href="/usercomics">Your Comics</Link>
                     {userLoggedIn ? (

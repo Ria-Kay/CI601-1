@@ -124,9 +124,10 @@ img {
     gap: 1.5rem;
     padding: 1rem;
     justify-items: center;
+    margin-top: 6rem;
 }
 .grid-container:hover{
-    transform: scale(1.05); /* Slight zoom */
+  /*  transform: scale(1.05);  Slight zoom */
 
 }
 /* Grid Items */

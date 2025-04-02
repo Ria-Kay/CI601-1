@@ -25,6 +25,10 @@ export default function Home() {
             <h1> This weeks new issues</h1>
             <LatestComics />
         </div>
+        <div className= "new-issues">
+            <h1> This weeks new issues</h1>
+            
+        </div>
       </main>
     </div>
   );

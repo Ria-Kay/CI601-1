@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 // import global.css from (fix this import)
 
 function UserComicsPage() {
@@ -7,6 +7,8 @@ function UserComicsPage() {
 
   return (
     <div>
+          <Header />
+
       <h1>User Comics</h1>
       {comics.length > 0 ? (
         comics.map((comic, index) => <p key={index}>{comic}</p>)
@@ -18,6 +20,3 @@ function UserComicsPage() {
 }
 
 export default UserComicsPage;
-export async function getServerSideProps() {
-  return { props: {} };
-}

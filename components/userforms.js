@@ -1,6 +1,14 @@
 import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from 'firebase/auth';
+import {
+  collection,
+  doc,
+  setDoc,
+  serverTimestamp
+} from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 
 export default function UserForm() {
@@ -10,7 +18,9 @@ export default function UserForm() {
     email: '',
     password: ''
   });
+
   const [message, setMessage] = useState('');
+  const [isLogin, setIsLogin] = useState(false); // toggle mode
 
   const handleChange = (e) => {
     setForm(prev => ({
@@ -24,21 +34,26 @@ export default function UserForm() {
     const { firstName, lastName, email, password } = form;
 
     try {
-      //  Register the user with Firebase Auth
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCred.user;
+      if (isLogin) {
+        // Log in
+        await signInWithEmailAndPassword(auth, email, password);
+        setMessage('Logged in successfully!');
+      } else {
+        // Sign up
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
 
-      //  Save extra info to Firestore
-      await setDoc(doc(db, 'users', user.uid), {
-        firstName,
-        lastName,
-        email,
-        createdAt: serverTimestamp(),
-        uid: user.uid
-      });
+        await setDoc(doc(db, 'users', user.uid), {
+          firstName,
+          lastName,
+          email,
+          createdAt: serverTimestamp(),
+          uid: user.uid
+        });
 
-      setMessage('Account created successfully!');
-      setForm({ firstName: '', lastName: '', email: '', password: '' });
+        setMessage('Account created successfully!');
+        setForm({ firstName: '', lastName: '', email: '', password: '' });
+      }
     } catch (err) {
       console.error(err);
       setMessage('Error: ' + err.message);
@@ -47,14 +62,48 @@ export default function UserForm() {
 
   return (
     <div>
-      <h2>Create an Account</h2>
+      <h2>{isLogin ? 'Log In' : 'Create an Account'}</h2>
       <form onSubmit={handleSubmit}>
-        <input name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} />
-        <input name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} />
-        <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} />
-        <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} />
-        <button type="submit">Register</button>
+        {!isLogin && (
+          <>
+            <input
+              name="firstName"
+              placeholder="First Name"
+              value={form.firstName}
+              onChange={handleChange}
+            />
+            <input
+              name="lastName"
+              placeholder="Last Name"
+              value={form.lastName}
+              onChange={handleChange}
+            />
+          </>
+        )}
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+        />
+        <button type="submit">{isLogin ? 'Log In' : 'Register'}</button>
       </form>
+
+      <p>
+        {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+        <button onClick={() => setIsLogin(!isLogin)} style={{ border: 'none', background: 'none', color: 'blue', cursor: 'pointer' }}>
+          {isLogin ? 'Sign Up' : 'Log In'}
+        </button>
+      </p>
+
       {message && <p>{message}</p>}
     </div>
   );

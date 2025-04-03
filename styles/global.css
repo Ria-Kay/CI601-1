@@ -110,3 +110,23 @@ header {
 .logoContainer img:hover {
     transform: scale(1.1);
 }
+
+.loginform{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgb(75 70 74);
+    border-radius: 0.5em;
+
+}
+
+form{
+    
+        border: 2px solid rgb(95 97 110);
+        border-radius: 0.5em;
+        padding: 20px;
+        width: 10em;
+        display: block;
+      
+}

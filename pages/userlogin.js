@@ -1,9 +1,18 @@
 import UserForm from '../components/userforms';
+import ComicHunt from '../components/comichunt';
+import Header from '../components/Header';
 
 export default function PeoplePage() {
   return (
-    <main>
-      <UserForm />
+    <div>
+    <Header />
+
+     
+     <main>
+      <div className='loginform'>
+        <UserForm />
+      </div>
     </main>
+    </div>
   );
 }

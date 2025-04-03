@@ -7,28 +7,77 @@ export default function Home() {
   return (
     <div>
       <ComicHunt />
-      <Header /> {/* fix search not opening the new page instead of opening inside the inded */}
+      <Header />
 
       <main>
-        <div className="home-intro">
-          {/*this will allow for lazy loading so its not as slow when the api will run for issues too*/}
-          <Image src="/images/comiclogo.png" alt="ComicHunt logo" width={200} height={100} />        <h1>Welcome to ComicHunt </h1>
-          <p>A Visual Archive For All Your Comcis</p>
-        </div>
-        <div className= "issue-adv">
-            <h1> Store your comics</h1>
-            <h3> Our passion for comics drives us all!Log all your comics using our easy to use comic database, or help build our community by adding in your own issues!</h3>
-            <h3> We understand that comic collecting is a real world hobby, so we’ve made it so that you can have a log representative of your real collection. Tag series’ into various different groups, marking what short or long boxes they're stored in, or even mark a pesky issue that you might have missed...</h3>
-        </div>
+        {/* Welcome Section */}
+        <section className="home-section intro-section">
+  <div className="sectionBox introBox">
+    <div className="intro-content">
+      <div className="image-wrapper logo-large">
+        <Image src="/images/comiclogo.png" alt="ComicHunt logo" fill />
+      </div>
 
+      <div className="intro-text">
+        <h1 className="intro-heading">Find, Log, Store</h1>
+        <h2 className="intro-subheading">Welcome to ComicHunt</h2>
+        <p className="intro-tagline">A Visual Archive For All Your Comics</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+        {/* Store Section (Agatha Harkness) */}
+        <section className="home-section">
+          <div className="sectionBox">
+            <div className="image-wrapper">
+              <Image
+                src="/images/Agatha_Harkness_29.png"
+                alt="Comic Character - Agatha Harkness"
+                fill
+              />
+            </div>
+
+            <div className="section-text">
+              <h1>Store your comics</h1>
+              <h3>
+              At ComicHunt, we know that comic collecting is more than just a hobby—it's a passion. Our intuitive database allows you to easily log and manage your entire collection, while also contributing to a growing community of fellow collectors.              </h3>
+              <h3>
+              Whether you're tracking individual issues, organizing by series, or tagging storage locations like short and long boxes, ComicHunt is designed to reflect the way you collect in the real world. You can even flag missing issues or curate your own custom groups to keep everything in order.              </h3>
+            </div>
+          </div>
+        </section>
+
+        {/* Latest Issues Section */}
+        <section className="home-section">
+        <div className="sectionBox">
         <div className= "new-issues">
-            <h1> This weeks new issues</h1>
             <LatestComics />
         </div>
-        <div className= "new-issues">
-            <h1> This weeks new issues</h1>
-            
         </div>
+        </section>
+
+        {/* New Users Section */}
+        <section className="home-section">
+          <div className="sectionBox">
+            <div className="image-wrapper">
+              <Image
+                src="/images/nightwing_dick_grayson_render_png_by_marcopolo157_diofugo-pre.png"
+                alt="Comic Char_D.G"
+                fill
+              />
+            </div>
+
+            <div className="section-text">
+              <h1>Newest Members</h1>
+              <h3>
+                Welcome our latest comic hunters to the community! Sign up and see who else shares your favorite series, or discover what your fellow fans are reading.
+              </h3>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );

@@ -155,6 +155,13 @@ img {
   display: block;
   margin: auto;
 }
+img.biglogo{
+    position: absolute;
+
+    inset: 0px;
+    color: transparent;
+}
+
 
 /* Grid Container */
 .grid-container {
@@ -259,9 +266,13 @@ img {
   .intro-content {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 0rem;
   }
-  
+  img.biglogo{
+    width:120%;
+    height:115%;
+
+  }
   .logo-large {
     position: relative;
     width: 560px;
@@ -274,6 +285,7 @@ img {
     flex-direction: column;
     justify-content: center;
     text-align: left;
+    padding-left: 20px;
   }
   
   .intro-heading {
@@ -294,6 +306,7 @@ img {
     font-size: 1rem;
     color: #ccc;
     margin-top: 0.5rem;
+    text-align: left;
   }
   
   /* Mobile tweaks */

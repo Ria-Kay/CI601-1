@@ -15,8 +15,14 @@ export default function Home() {
   <div className="sectionBox introBox">
     <div className="intro-content">
       <div className="image-wrapper logo-large">
-        <Image src="/images/comiclogo.png" alt="ComicHunt logo" fill />
-      </div>
+
+<Image
+  src="/images/updatedlogo.svg"
+  alt="ComicHunt logo"
+  width={320}
+  height={320}
+  className="biglogo"
+/>      </div>
 
       <div className="intro-text">
         <h1 className="intro-heading">Find, Log, Store</h1>

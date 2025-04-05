@@ -1,0 +1,43 @@
+.viewerWrapper {
+    padding: 2rem;
+    background-color: #151321;
+    color: white;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    font-family: "Boldonse", system-ui;
+  }
+  
+  .yearSection {
+    margin-bottom: 3rem;
+  }
+  
+  .yearLabel {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    border-left: 5px solid #00cfff;
+    padding-left: 1rem;
+  }
+  
+  .coverRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  
+  .coverRow > div {
+    width: 100px;
+    height: 140px;
+    transition: transform 0.2s ease;
+  }
+  
+  .coverRow > div:hover {
+    transform: scale(1.08);
+  }
+  

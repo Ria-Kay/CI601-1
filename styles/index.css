@@ -23,8 +23,20 @@ body {
   display: flex;
   justify-content: center;
   padding: 3rem 1rem;
+  background: linear-gradient(to right, #0f0e17, #131130);
 }
-
+.left {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(to left, #0f0e17, #131130);
+  }
+  .right {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(to right, #0f0e17, #131130);
+  }
 .sectionBox {
   display: flex;
   flex-direction: row;
@@ -262,6 +274,7 @@ img.biglogo{
   }
   .intro-section{
     padding-bottom: 0;
+    background: linear-gradient(to right, #0f0e17, #131130);
   }
   .intro-content {
     display: flex;

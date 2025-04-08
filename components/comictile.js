@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/ComicTile.module.css';
+import SaveButton from './saveButton';
 
 export default function ComicTile({ comic }) {
   const {
@@ -18,11 +19,6 @@ export default function ComicTile({ comic }) {
 
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleSave = () => {
-    alert(`Comic saved: ${title}`);
-  };
-
-  // Allow ESC to close popup
   useEffect(() => {
     const escHandler = (e) => {
       if (e.key === 'Escape') setShowPopup(false);
@@ -45,17 +41,12 @@ export default function ComicTile({ comic }) {
               target="_blank"
               rel="noopener noreferrer"
               className={styles.link}
-              onClick={(e) => e.stopPropagation()} // So link doesn't trigger popup
+              onClick={(e) => e.stopPropagation()}
             >
               View on ComicVine
             </a>
           </div>
-          <button className={styles.saveBtn} onClick={(e) => {
-            e.stopPropagation(); // Prevent opening popup
-            handleSave();
-          }}>
-            Save 📥
-          </button>
+          <SaveButton comic={comic} status="favourite" />
         </div>
       </div>
 
@@ -67,6 +58,11 @@ export default function ComicTile({ comic }) {
               <h2>{title}</h2>
               <p dangerouslySetInnerHTML={{ __html: description || 'No description available.' }}></p>
               <a href={site_detail_url} target="_blank" rel="noreferrer">View on ComicVine</a>
+              <div className={styles.popupButtons}>
+                <SaveButton comic={comic} status="favourite" />
+                <SaveButton comic={comic} status="read" />
+                <SaveButton comic={comic} status="to-read" />
+              </div>
               <button onClick={() => setShowPopup(false)}>Close</button>
             </div>
           </div>

@@ -9,20 +9,22 @@ export default function LatestComics() {
     const fetchLatest = async () => {
       try {
         const response = await fetch('/api/proxy?query=new&sort=cover_date:desc&limit=100');
-        //const response = await fetch('/api/proxy?query=*&sort=cover_date:desc&limit=100');
-
         const data = await response.json();
+
+        console.log("Comic data:", data);
 
         const today = new Date();
         const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(today.getDate() - 7);
+        sevenDaysAgo.setDate(today.getDate() - 14);
+        console.log("Unfiltered comics:", data.results);
 
         const filtered = (data.results || []).filter((comic) => {
           if (!comic.cover_date) return false;
           const coverDate = new Date(comic.cover_date);
-          return coverDate >= sevenDaysAgo && coverDate <= today;
+          return coverDate >= sevenDaysAgo;
         });
 
+        console.log("filtered data:", filtered);
         setComics(filtered);
       } catch (err) {
         console.error('Error fetching latest comics:', err);

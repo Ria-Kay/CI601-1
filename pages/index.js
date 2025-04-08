@@ -34,7 +34,7 @@ export default function Home() {
         </section>
 
         {/* Store Section */}
-        <section className="home-section">
+        <section className="home-section left">
           <div className="sectionBox">
             <div className="image-wrapper">
               <Image
@@ -65,7 +65,7 @@ export default function Home() {
         </section>
 
         {/* Dynamic Visual Analytics Section */}
-        <section className="home-section">
+        <section className="home-section right">
           <div className="sectionBox">
             <div className="image-wrapper">
               <Image
@@ -96,7 +96,7 @@ export default function Home() {
         </section>
 
         {/* Comic Vine API Section */}
-        <section className="home-section">
+        <section className="home-section left">
           <div className="sectionBox">
             <div className="image-wrapper">
               <Image
@@ -127,7 +127,7 @@ export default function Home() {
         </section>
 
         {/* Latest Issues */}
-        <section className="home-section">
+        <section className="home-section right">
           <div className="sectionBox">
             <div className="new-issues">
               <LatestComics />
@@ -136,7 +136,7 @@ export default function Home() {
         </section>
 
         {/* Newest Users Section */}
-        <section className="home-section">
+        <section className="home-section left">
           <div className="sectionBox">
             <div className="image-wrapper">
               <Image

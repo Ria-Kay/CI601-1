@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/ComicTile.module.css';
-import SaveButton from './saveButton';
+import SaveButton from './savebutton';
 
 export default function ComicTile({ comic }) {
   const {
@@ -16,6 +16,9 @@ export default function ComicTile({ comic }) {
   const title = name || `${volume?.name || 'Unknown'} #${issue_number || 'Unknown'}`;
   const cover = image?.small_url;
   const date = cover_date || 'Unknown';
+  const [selectedCover, setSelectedCover] = useState(cover); // default to main
+
+
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -58,10 +61,30 @@ export default function ComicTile({ comic }) {
               <h2>{title}</h2>
               <p dangerouslySetInnerHTML={{ __html: description || 'No description available.' }}></p>
               <a href={site_detail_url} target="_blank" rel="noreferrer">View on ComicVine</a>
+              {comic.associated_images && comic.associated_images.length > 0 && (
+  <div className={styles.variantCarousel}>
+    <h4>Choose a Cover Variant:</h4>
+    <div className={styles.variantTrack}>
+      {[comic.image, ...comic.associated_images].map((img, index) => (
+        <img
+          key={index}
+          src={img.original_url || img}
+          alt={`Variant ${index + 1}`}
+          className={`${styles.variantImage} ${selectedCover === (img.original_url || img) ? styles.activeVariant : ''}`}
+          onClick={() => setSelectedCover(img.original_url || img)}
+        />
+      ))}
+    </div>
+  </div>
+)}
+
+              
+              
               <div className={styles.popupButtons}>
-                <SaveButton comic={comic} status="favourite" />
-                <SaveButton comic={comic} status="read" />
-                <SaveButton comic={comic} status="to-read" />
+              <SaveButton comic={{ ...comic, preferredCover: selectedCover }} status="favourite" />
+<SaveButton comic={{ ...comic, preferredCover: selectedCover }} status="read" />
+<SaveButton comic={{ ...comic, preferredCover: selectedCover }} status="to-read" />
+
               </div>
               <button onClick={() => setShowPopup(false)}>Close</button>
             </div>

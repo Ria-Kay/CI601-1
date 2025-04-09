@@ -105,6 +105,7 @@
   .popupInfo {
     flex: 1;
     overflow-y: auto;
+    
   }
   
   .popupInfo h2 {
@@ -117,6 +118,12 @@
     line-height: 1.6;
     max-height: 300px;
     overflow-y: auto;
+      white-space: normal;
+      overflow-wrap: break-word;
+      margin-bottom: 1rem;
+      text-align: justify;
+    
+    
   }
   
   .popupInfo a {
@@ -139,4 +146,32 @@
   .popupInfo button:hover {
     background: #666;
   }
-    
+  .variantCarousel {
+    margin-top: 1rem;
+  }
+  
+  .variantTrack {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .variantImage {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .variantImage:hover {
+    border-color: #00cfff;
+  }
+  
+  .activeVariant {
+    border-color: #fff;
+    box-shadow: 0 0 10px #00cfff;
+  }
+  

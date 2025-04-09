@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/ComicTile.module.css';
-import SaveButton from './savebutton';
+import SaveButton from './saveButton';
 
 export default function ComicTile({ comic }) {
   const {

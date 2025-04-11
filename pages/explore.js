@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
-
 import Header from '../components/Header';
 import PieChartVisualizer from '../components/piechart';
 import ComicHunt from '../components/comichunt';
 import ComicTile from '../components/comictile';
 import ComicTilePopup from '../components/comictilepop';
 import LatestComics from '../components/latestcomics';
+import Footer from '../components/Footer';
 
 
 function ExplorePage() {
@@ -19,7 +19,7 @@ function ExplorePage() {
         <main>
         <section className="home-section intro-section">
            <h1 className='exploreH'>
-            Welcome to the Explore Page
+            Explore Our Comics
            </h1>
 
            </section>
@@ -28,7 +28,7 @@ function ExplorePage() {
                      <div className="sectionBox">
                        
                        <div className="section-text">
-                         <h1>View our lates comics!</h1>
+                        
                          <LatestComics />
                        </div>
                      </div>
@@ -36,7 +36,36 @@ function ExplorePage() {
 
 
 
-            
+                   <section className="home-section right">
+                     <div className="sectionBox">
+                       
+                       <div className="section-text">
+                        <h1> Spotlights On!</h1>
+                        <h3>
+                          This weeks featured issue is...
+                        </h3>
+
+                         
+                       </div>
+                     </div>
+                   </section>
+
+                   <section className="home-section left">
+                     <div className="sectionBox">
+                       
+                       <div className="section-text">
+                        <h1>
+                          Search Publishers
+                        </h1>
+
+
+                       </div>
+                     </div>
+                   </section>
+
+            <div>
+              <Footer />
+            </div>
        
 
         </main>

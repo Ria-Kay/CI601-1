@@ -61,7 +61,7 @@ export default function UserForm() {
   };
 
   return (
-    <div>
+    <div className='AuthBox'>
       <h2>{isLogin ? 'Log In' : 'Create an Account'}</h2>
       <form onSubmit={handleSubmit}>
         {!isLogin && (

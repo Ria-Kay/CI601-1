@@ -10,14 +10,15 @@ body{
 
 }
 header {
-    width: 45%; /* Keep the header width at 45% */
+    /* width causes gap error for some reason */
     padding: 1rem;
     display: flex;
-    justify-content: space-between; /* Align navigation left and search right */
-    align-items: center; /* Vertically align items */
-    position: absolute; /* Place header in the top-right corner */
+    justify-content: space-between; /*  navigation left and search right */
+    align-items: center; 
+    position: fixed; /* Place header in the top-right corner */
     top: 0;
     right: 0;
+
     background-color: #1c1a29; /* Optional: background for better visibility */
     border-radius: 8px; /* Optional: rounded corners */
     z-index: 1000;
@@ -35,6 +36,7 @@ header {
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s ease;
+    padding: 40px;
     white-space: nowrap; /* Prevent text wrapping might be archaic now with next having sum changes to using an a tag, check if it actually reads */
 }
 
@@ -111,25 +113,87 @@ header {
     transform: scale(1.1);
 }
 
-.loginform{
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgb(75 70 74);
-    border-radius: 0.5em;
-
-}
 
 form{
     
-        border: 2px solid rgb(95 97 110);
         border-radius: 0.5em;
         padding: 20px;
         width: 10em;
         display: block;
       
 }
+/* Wrap to center AuthBox on the page */
+.loginform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* full page height */
+  }
+  
+  /* AuthBox fixing for centering */
+  .AuthBox {
+    background: rgba(24, 46, 132, 0.7);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(6.5px);
+    -webkit-backdrop-filter: blur(6.5px);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Headline styling */
+  .AuthBox h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  /* Form layout */
+  .AuthBox form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* Inputs */
+  .AuthBox input {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    background-color: #2a2a3d;
+    color: white;
+  }
+  
+  /* Button */
+  .AuthBox button[type="submit"] {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .AuthBox button[type="submit"]:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Account switch text */
+  .AuthBox p {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+  
+  .AuthBox p button {
+    margin-left: 0.25rem;
+    font-weight: bold;
+  }
+  
 
 
 .publisherCard {
@@ -154,4 +218,10 @@ form{
     padding: 2rem;
     text-align: center;
   }
-  
+
+  .variables{
+  display: flex;
+gap: 1rem;
+margin-bottom:1rem ;
+
+  }

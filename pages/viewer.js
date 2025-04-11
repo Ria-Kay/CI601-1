@@ -1,54 +1,48 @@
-import { useEffect, useState } from 'react';
-import ComicTile from '../components/comictile';
-import styles from '../styles/viewer.module.css';
+import { useState } from 'react';
+import BarChart from '../components/barchart';
+import ComicHunt from '../components/comichunt';
 import Header from '../components/Header';
-export default function Viewer() {
-  const [groupedComics, setGroupedComics] = useState({});
+import Footer from '../components/Footer';
 
-  useEffect(() => {
-    async function fetchComics() {
-      try {
-        const res = await fetch('/api/proxy?query=batman&limit=100');
-        const data = await res.json();
+export default function ViewerPage() {
+  const [savedAs, setSavedAs] = useState('all');
+  const [groupBy, setGroupBy] = useState('year');
 
-        const grouped = {};
-
-        (data.results || []).forEach((comic) => {
-          const year = comic.cover_date?.split('-')[0] || 'Unknown';
-          if (!grouped[year]) grouped[year] = [];
-          grouped[year].push(comic);
-        });
-
-        // Sort years descending
-        const sorted = Object.fromEntries(
-          Object.entries(grouped).sort((a, b) => b[0].localeCompare(a[0]))
-        );
-
-        setGroupedComics(sorted);
-      } catch (err) {
-        console.error('Error loading comics:', err);
-      }
-    }
-
-    fetchComics();
-  }, []);
+  const filterProps = {
+    ...(savedAs !== 'all' && { field: 'savedAs', value: savedAs }),
+    groupBy,
+  };
 
   return (
-    <main className={styles.viewerWrapper}>
-      <h1 className={styles.title}> Comic  Viewer</h1>
-            <div>
-                <Header />
-            </div>
-      {Object.entries(groupedComics).map(([year, comics]) => (
-        <section key={year} className={styles.yearSection}>
-          <h2 className={styles.yearLabel}>{year}</h2>
-          <div className={styles.coverRow}>
-            {comics.map((comic, i) => (
-              <ComicTile key={i} comic={comic} />
-            ))}
-          </div>
-        </section>
-      ))}
+    <main>
+      <div>
+      <ComicHunt />
+      <Header />
+      </div>
+      <h1>Comic Viewer</h1>
+
+      {/* Filter dropdowns */}
+   
+        <div className='variables'>
+        <select onChange={(e) => setSavedAs(e.target.value)} value={savedAs}>
+          <option value="all">All Comics</option>
+          <option value="favourite">Favourites</option>
+          <option value="read">Read</option>
+          <option value="to-read">To-Read</option>
+        </select>
+
+        <select onChange={(e) => setGroupBy(e.target.value)} value={groupBy}>
+          <option value="year">Group by Year</option>
+          <option value="series">Group by Series</option>
+          <option value="author">Group by Author</option>
+        </select>
+      </div>
+
+      {/* Chart */}
+      <BarChart filterBy={filterProps} />
+
+    
+
     </main>
   );
 }

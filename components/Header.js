@@ -34,9 +34,10 @@ const Header = () => {
 
           {user ? (
             <>
+              
+              <Link href="/visualiser">Your Data</Link>
+              <Link href="/viewer">Comic Viewer</Link>
               <Link href="/profile">Profile</Link>
-              <Link href="/visualiser">visualiser</Link>
-              <Link href="/viewer">viewer</Link>
 
               <button onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'blue' }}>
                 Logout

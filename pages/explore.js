@@ -7,7 +7,8 @@ import ComicTile from '../components/comictile';
 import ComicTilePopup from '../components/comictilepop';
 import LatestComics from '../components/latestcomics';
 import Footer from '../components/Footer';
-
+import PublisherCarousel from '../components/publishercarousel';
+import Spotlight from '../components/writerspotlight';
 
 function ExplorePage() {
     return(
@@ -42,8 +43,11 @@ function ExplorePage() {
                        <div className="section-text">
                         <h1> Spotlights On!</h1>
                         <h3>
-                          This weeks featured issue is...
+                          This weeks featured authour is...
                         </h3>
+                        <div>
+                          <Spotlight />
+                        </div>
 
                          
                        </div>
@@ -57,11 +61,16 @@ function ExplorePage() {
                         <h1>
                           Search Publishers
                         </h1>
+                        <div>
+                          <PublisherCarousel />
+                        </div>
 
 
                        </div>
                      </div>
                    </section>
+
+                   
 
             <div>
               <Footer />

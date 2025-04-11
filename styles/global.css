@@ -130,3 +130,28 @@ form{
         display: block;
       
 }
+
+
+.publisherCard {
+    text-align: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .publisherCard:hover {
+    transform: scale(1.05);
+  }
+  
+  .publisherLogo {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+  
+  .publisherSection {
+    padding: 2rem;
+    text-align: center;
+  }
+  

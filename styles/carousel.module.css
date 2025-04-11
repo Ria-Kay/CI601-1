@@ -1,11 +1,58 @@
 .carousel {
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 1rem;
-  }
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0;
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 1rem;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
   
-  .carouselTrack {
-    display: flex;
-    gap: 1rem;
-  }
   
+.publisherCard {
+  text-align: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.publisherCard:hover {
+  transform: scale(1.05);
+}
+
+.publisherLogo {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.publisherSection {
+  padding: 2rem;
+  text-align: center;
+}
+
+.carousel::-webkit-scrollbar {
+  height: 6px; /* thinner */
+}
+
+.carousel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background-color: #3ac6ff; /*  blue */
+  border-radius: 10px;
+  box-shadow: 0 0 5px #3ac6ff; /*  glow from glassmorphism link */
+  transition: background-color 0.3s ease;
+}
+
+.carousel::-webkit-scrollbar-thumb:hover {
+  background-color: #58d1ff; /* brighter on hover */
+  box-shadow: 0 0 8px #58d1ff;
+}

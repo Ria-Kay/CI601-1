@@ -2,6 +2,8 @@ import ComicHunt from '../components/comichunt';
 import Header from '../components/Header';
 import Image from 'next/image';
 import LatestComics from '../components/latestcomics';
+import Footer from '../components/Footer';
+
 
 export default function Home() {
   return (
@@ -162,6 +164,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+          <div>
+                      <Footer />
+                    </div>
       </main>
     </div>
   );

@@ -9,7 +9,6 @@ export default function Spotlight() {
   useEffect(() => {
     const fetchSpotlight = async () => {
       try {
-        
         const totalRes = await fetch('/api/proxy?resource=people&limit=1');
         const totalData = await totalRes.json();
         const total = totalData.number_of_total_results;
@@ -36,7 +35,17 @@ export default function Spotlight() {
   return (
     <section className={styles.spotlight}>
       <h2>Spotlight: {person.name}</h2>
-      {person.image && <img src={person.image.original_url} alt={person.name} className={styles.personImg} />}
+
+      <img
+        src={
+          person.image?.original_url === "https://comicvine.gamespot.com/a/uploads/original/11122/111222211/6373148-blank.png"
+            ? "/images/404NF.svg"
+            : person.image?.original_url
+        }
+        alt={person.name}
+        className={styles.personImg}
+      />
+
       {person.deck && <p>{person.deck}</p>}
 
       {issues.length > 0 && (

@@ -225,3 +225,44 @@ gap: 1rem;
 margin-bottom:1rem ;
 
   }
+
+  
+::-webkit-scrollbar {
+  height: 6px; /* thinner */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3ac6ff; /*  blue */
+  /* border-radius: 10px; */
+  box-shadow: 0 0 5px #3ac6ff; /*  glow from glassmorphism link */
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #58d1ff; /* brighter on hover */
+  box-shadow: 0 0 8px #58d1ff;
+}
+
+
+option {
+  color: rgb(0, 0, 0);
+}
+
+select{
+  background: rgba(143, 55, 179, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white;
+  padding: 6px 10px;
+  appearance: none;
+  color: white;
+
+
+}

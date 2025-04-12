@@ -6,7 +6,7 @@ const Comichunt = () => {
             {/* Link to home page when logo is clicked */}
             <Link href="/">
                     <img
-                        src="/images/comiclogo.png" // Rename the logo??
+                        src="/images/updatedlogo.svg" // Rename the logo??
                         alt="Comic Hunt Logo"
                     />
             </Link>

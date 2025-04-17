@@ -27,6 +27,7 @@ const Header = () => {
         <div className="navigation">
           <Link href="/">Home</Link>
           <Link href="/explore">Explore</Link>
+          <Link href="/modeler">Comic Models</Link>
 
           {user && (
             <Link href="/usercomics">Your Comics</Link>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Carousel from './carousel'; 
+import ComicTile from './comictile';
 import styles from '../styles/Spotlight.module.css';
 
 export default function Spotlight() {
@@ -19,11 +20,18 @@ export default function Spotlight() {
         const picked = personData.results[0];
         setPerson(picked);
 
-        const issueRes = await fetch(`/api/proxy?resource=issues&filter=person:${picked.id}&limit=10`);
+        const issueRes = await fetch(`/api/proxy?resource=issues&filter=person:${picked.id}&limit=20`);
         const issueData = await issueRes.json();
-        setIssues(issueData.results || []);
+
+        if (issueData?.results?.length > 0) {
+          const shuffled = issueData.results.sort(() => 0.5 - Math.random());
+          setIssues(shuffled.slice(0, 10));
+        } else {
+          setIssues([]);
+        }
+
       } catch (err) {
-        console.error('Error loading spotlight:', err);
+        setIssues([]);
       }
     };
 
@@ -54,8 +62,7 @@ export default function Spotlight() {
           <Carousel>
             {issues.map((comic) => (
               <div key={comic.id} className={styles.comicCard}>
-                <img src={comic.image?.small_url} alt={comic.name} />
-                <p>{comic.volume?.name} #{comic.issue_number}</p>
+                <ComicTile comic={comic} />
               </div>
             ))}
           </Carousel>

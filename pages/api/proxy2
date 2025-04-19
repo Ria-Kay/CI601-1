@@ -22,3 +22,86 @@ export default async function handler(req, res) {
         });
     }
 }
+
+
+
+import axios from "axios";
+
+export default async function handler(req, res) {
+  const {
+    resource = "search",
+    query = "",
+    limit = 10,
+    offset = 0,
+    filter = "",
+    sort = "",
+    field_list = "",
+  } = req.query;
+
+  const API_KEY = "de2d10e13b5fca21fdf1b9c321676937e104e57b"; // KEEP SAFEEE
+  const baseUrl = `https://comicvine.gamespot.com/api/${resource}/`;
+
+  const params = {
+    api_key: API_KEY,
+    format: "json",
+    limit,
+    offset,
+  };
+  if (req.query.api_detail_url) {
+    try {
+      const detailRes = await axios.get(req.query.api_detail_url, {
+        params: {
+          api_key: API_KEY,
+          format: 'json'
+        }
+      });
+      return res.status(200).json(detailRes.data);
+    } catch (error) {
+      console.error("API Detail Error:", error.message);
+      return res.status(error.response?.status || 500).json({
+        error: "Failed to fetch detail data from Comic Vine.",
+      });
+    }
+  }
+  
+  // Default field list: grab everything useful for your app
+  const defaultFields = [
+    "id",
+    "name",
+    "issue_number",
+    "image",
+    "cover_date",
+    "description",
+    "site_detail_url",
+    "volume",
+    "character_credits",
+    "person_credits",
+    "concept_credits",
+    "publisher",
+  ].join(",");
+
+  // Apply field list (custom or default)
+  params.field_list = field_list || defaultFields;
+
+  // Apply filters based on resource type
+  if (resource === "search") {
+    if (!query) {
+      return res.status(400).json({ error: "Query parameter is required for search." });
+    }
+    params.query = query;
+    params.resources = "issue";
+  } else {
+    if (filter) params.filter = filter;
+    if (sort) params.sort = sort;
+  }
+
+  try {
+    const response = await axios.get(baseUrl, { params });
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Proxy API Error:", error.message);
+    res.status(error.response?.status || 500).json({
+      error: "Failed to fetch data from the ComicVine API.",
+    });
+  }
+}

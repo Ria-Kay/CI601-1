@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Carousel from './carousel'; 
-import ComicTile from './comictile';
+import ComicTile from './ComicTile';
 import styles from '../styles/Spotlight.module.css';
 
 export default function Spotlight() {

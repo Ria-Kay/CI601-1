@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from '../styles/ComicTile.module.css';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { auth, db } from '../lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { auth, db, storage } from '../lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import { storage } from '../lib/firebase';
+import ComicMetaEditor from './ComicMetaEditor';
 
 export default function ComicTile({ comic }) {
   const {
@@ -25,6 +25,8 @@ export default function ComicTile({ comic }) {
   const [selectedCover, setSelectedCover] = useState(defaultCover);
   const [showPopup, setShowPopup] = useState(false);
   const [firebaseImageUrl, setFirebaseImageUrl] = useState(null);
+  const [showMetaEditor, setShowMetaEditor] = useState(false);
+  const [pendingSaveStatus, setPendingSaveStatus] = useState(null);
 
   useEffect(() => {
     const escHandler = (e) => {
@@ -33,39 +35,35 @@ export default function ComicTile({ comic }) {
     window.addEventListener('keydown', escHandler);
     return () => window.removeEventListener('keydown', escHandler);
   }, []);
+
   const uploadCoverImage = async () => {
     try {
       const proxyUrl = `/api/proxy-image?imageUrl=${encodeURIComponent(selectedCover)}`;
-      console.log('🔄 Fetching image from proxy:', proxyUrl);
-
       const res = await fetch(proxyUrl);
-      if (!res.ok) {
-        throw new Error(`Proxy fetch failed: ${res.status}`);
-      }
-
+      if (!res.ok) throw new Error(`Proxy fetch failed: ${res.status}`);
       const blob = await res.blob();
-      console.log('📦 Blob size:', blob.size, 'type:', blob.type);
-
-      // const storage = getStorage();
       const fileRef = ref(storage, `covers/${comic.id}.jpg`);
-
-      console.log('📤 Uploading to Firebase Storage at:', `covers/${comic.id}.jpg`);
       await uploadBytes(fileRef, blob);
-      console.log('✅ Upload complete');
-
-      const downloadUrl = await getDownloadURL(fileRef);
-      console.log('🌐 Firebase image URL:', downloadUrl);
-
-      setFirebaseImageUrl(downloadUrl);
-      return downloadUrl;
+      return await getDownloadURL(fileRef);
     } catch (err) {
-      console.error('🔥 Upload failed:', err);
+      console.error('Upload failed:', err);
       return null;
     }
   };
 
   const handleSave = async (status) => {
     if (!auth.currentUser) return alert('Please log in to save comics.');
+
+    const isMissingMeta =
+      !comic.volume?.publisher?.name ||
+      !comic.character_credits?.length ||
+      !comic.person_credits?.length;
+
+    if (isMissingMeta) {
+      setPendingSaveStatus(status);
+      setShowMetaEditor(true);
+      return;
+    }
 
     const firebaseUrl = await uploadCoverImage();
 
@@ -75,14 +73,18 @@ export default function ComicTile({ comic }) {
       firebaseImage: firebaseUrl,
       savedAs: status,
       savedAt: new Date().toISOString(),
+      publisher: comic.volume?.publisher?.name || null,
+      characters: comic.character_credits?.map((char) => char.name) || [],
+      authors: comic.person_credits?.map((person) => person.name) || [],
     };
 
     try {
       const docRef = doc(db, 'users', auth.currentUser.uid, 'savedComics', comic.id.toString());
       await setDoc(docRef, updatedComic);
       alert(`Saved to ${status}`);
+      setShowPopup(false);
     } catch (err) {
-      console.error('❌ Failed to save comic to Firestore:', err);
+      console.error('Failed to save comic:', err);
     }
   };
 
@@ -124,6 +126,18 @@ export default function ComicTile({ comic }) {
           <button onClick={() => setShowPopup(false)}>Close</button>
         </div>
       </div>
+
+      {showMetaEditor && (
+        <ComicMetaEditor
+          comic={comic}
+          selectedCover={selectedCover}
+          saveStatus={pendingSaveStatus}
+          onClose={() => {
+            setShowMetaEditor(false);
+            setShowPopup(false);
+          }}
+        />
+      )}
     </div>
   );
 

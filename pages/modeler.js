@@ -14,6 +14,8 @@ export default function ModelerPage() {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [selectedComic, setSelectedComic] = useState(null);
   const [filterType, setFilterType] = useState('year');
+  const [showLabels, setShowLabels] = useState(false);
+  const [groupColors, setGroupColors] = useState({});
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -33,30 +35,59 @@ export default function ModelerPage() {
   useEffect(() => {
     if (!comics.length) return;
 
-    const nodes = comics.map((comic) => ({
-      id: comic.id,
-      image: comic.firebaseImage || comic.preferredCover,
-      comic,
-    }));
+    const groupMap = {};
+    const nodes = comics.map((comic) => {
+      let groupKey;
+      switch (filterType) {
+        case 'year':
+          groupKey = comic.cover_date?.slice(0, 4);
+          break;
+        case 'series':
+          groupKey = comic.volume?.name;
+          break;
+        case 'publisher':
+          groupKey = comic.publisher;
+          break;
+        case 'genre':
+          groupKey = (comic.genres && comic.genres[0]) || 'Unknown';
+          break;
+        case 'characters':
+          groupKey = (comic.characters && comic.characters[0]) || 'Unknown';
+          break;
+        case 'authors':
+          groupKey = (comic.authors && comic.authors[0]) || 'Unknown';
+          break;
+        default:
+          groupKey = 'Unknown';
+      }
 
-    const links = generateLinks(comics, filterType);
+      if (!groupMap[groupKey]) {
+        groupMap[groupKey] = getRandomColor();
+      }
+
+      return {
+        id: comic.id,
+        image: comic.firebaseImage || comic.preferredCover,
+        comic,
+        groupKey,
+        color: groupMap[groupKey]
+      };
+    });
+
+    const links = generateLinks(nodes, filterType);
+    setGroupColors(groupMap);
     setGraphData({ nodes, links });
   }, [comics, filterType]);
 
-  const generateLinks = (comics, type) => {
+  const generateLinks = (nodes, type) => {
     const links = [];
     const groups = {};
 
-    comics.forEach((comic) => {
-      let key;
-      if (type === 'year') {
-        key = comic.cover_date?.slice(0, 4);
-      } else if (type === 'series') {
-        key = comic.volume?.name;
-      }
+    nodes.forEach((node) => {
+      const key = node.groupKey;
       if (!key) return;
       if (!groups[key]) groups[key] = [];
-      groups[key].push(comic);
+      groups[key].push(node);
     });
 
     Object.values(groups).forEach((group) => {
@@ -64,6 +95,7 @@ export default function ModelerPage() {
         links.push({
           source: group[i].id,
           target: group[i + 1].id,
+          color: group[i].color
         });
       }
     });
@@ -71,11 +103,15 @@ export default function ModelerPage() {
     return links;
   };
 
+  const getRandomColor = () => {
+    const hue = Math.floor(Math.random() * 360);
+    return `hsl(${hue}, 100%, 70%)`;
+  };
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Header />
 
-      {/* 🔄 Filter Dropdown */}
       <div style={{ position: 'absolute', top: 70, left: 20, zIndex: 10 }}>
         <select
           value={filterType}
@@ -84,10 +120,25 @@ export default function ModelerPage() {
         >
           <option value="year">Group by Year</option>
           <option value="series">Group by Series</option>
+          <option value="publisher">Group by Publisher</option>
+          <option value="genre">Group by Genre</option>
+          <option value="characters">Group by Characters</option>
+          <option value="authors">Group by Authors</option>
         </select>
+
+        <button
+          onClick={() => setShowLabels((prev) => !prev)}
+          style={{
+            marginLeft: '1rem',
+            padding: '0.5rem',
+            borderRadius: '6px',
+            fontSize: '0.9rem'
+          }}
+        >
+          {showLabels ? 'Hide Labels' : 'Show Labels'}
+        </button>
       </div>
 
-      {/* 🪄 Popup for comic info */}
       {selectedComic && (
         <div
           style={{
@@ -109,21 +160,51 @@ export default function ModelerPage() {
         </div>
       )}
 
-      {/* 🌐 3D Graph */}
       <ForceGraph3D
         graphData={graphData}
         nodeThreeObject={(node) => {
+          const group = new THREE.Group();
+
           const texture = new THREE.TextureLoader().load(node.image);
-          const material = new THREE.SpriteMaterial({ map: texture });
-          const sprite = new THREE.Sprite(material);
+          const spriteMaterial = new THREE.SpriteMaterial({
+            map: texture,
+            depthTest: true,
+            depthWrite: true,
+          });
+          const sprite = new THREE.Sprite(spriteMaterial);
           sprite.scale.set(8, 12, 1);
-          return sprite;
+          sprite.renderOrder = 1;
+
+          const glowCanvas = document.createElement('canvas');
+          glowCanvas.width = glowCanvas.height = 128;
+          const ctx = glowCanvas.getContext('2d');
+          const gradient = ctx.createRadialGradient(64, 64, 10, 64, 64, 64);
+          gradient.addColorStop(0, node.color);
+          gradient.addColorStop(1, 'transparent');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, 128, 128);
+
+          const glowTexture = new THREE.CanvasTexture(glowCanvas);
+          const glowMaterial = new THREE.SpriteMaterial({
+            map: glowTexture,
+            transparent: true,
+            depthWrite: false,
+            depthTest: true,
+          });
+          const glow = new THREE.Sprite(glowMaterial);
+          glow.scale.set(16, 16, 1);
+          glow.position.set(0, 0, -0.01);
+
+          group.add(glow);
+          group.add(sprite);
+
+          return group;
         }}
-        linkColor={() => '#ff00ff'}
+        linkColor={(link) => link.color || '#ffffff'}
         linkWidth={1}
         onNodeClick={(node) => setSelectedComic(node.comic)}
         enableNodeHover={false}
-        nodeLabel={() => ''}
+        nodeLabel={(node) => (showLabels ? node.comic.name || `#${node.comic.issue_number}` : '')}
       />
     </div>
   );

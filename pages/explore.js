@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Header from '../components/Header';
 import PieChartVisualizer from '../components/piechart';
 import ComicHunt from '../components/comichunt';
-import ComicTile from '../components/comictile';
+import ComicTile from '../components/ComicTile';
 import ComicTilePopup from '../components/comictilepop';
 import LatestComics from '../components/latestcomics';
 import Footer from '../components/Footer';

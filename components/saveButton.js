@@ -8,6 +8,36 @@ export default function SaveButton({ comic, status }) {
   const handleSave = async () => {
     if (!user) return alert('Please log in to save comics.');
 
+    // 1️⃣ GET DETAILED COMIC INFO
+    let detailedData = {};
+    try {
+      const detailUrl = comic.api_detail_url;
+      const res = await fetch(`/api/proxy?api_detail_url=${encodeURIComponent(detailUrl)}`);
+      const data = await res.json();
+      detailedData = data.results || {};
+    } catch (err) {
+      console.error("⚠️ Failed to fetch detailed comic info:", err);
+    }
+
+    // 2️⃣ OPTIONAL: Fetch volume publisher if needed
+    let publisher = "";
+    try {
+      if (detailedData.volume?.api_detail_url) {
+        const volRes = await fetch(`/api/proxy?api_detail_url=${encodeURIComponent(detailedData.volume.api_detail_url)}`);
+        const volData = await volRes.json();
+        publisher = volData.results?.publisher?.name || "";
+      }
+    } catch (err) {
+      console.warn("📦 Failed to fetch volume publisher:", err);
+    }
+
+    // 3️⃣ EXTRACT credits
+    const characters = detailedData.character_credits?.map((char) => char.name) || [];
+    const authors = detailedData.person_credits
+      ?.filter((p) => /writer|author/i.test(p.role || ""))
+      .map((p) => p.name) || [];
+
+    // 4️⃣ UPLOAD image to Firebase if needed
     let firebaseImageUrl = comic.firebaseImage;
     const imageToUpload =
       comic.preferredCover ||
@@ -17,22 +47,12 @@ export default function SaveButton({ comic, status }) {
 
     if (!firebaseImageUrl && imageToUpload) {
       try {
-        console.log(`📤 Uploading image via proxy for comic ID ${comic.id}`);
-
-        // 👇👇👇 USE THE PROXY
         const proxyUrl = `/api/proxy-image?imageUrl=${encodeURIComponent(imageToUpload)}`;
         const res = await fetch(proxyUrl);
-
-        if (!res.ok) {
-          throw new Error(`Proxy fetch failed: ${res.status}`);
-        }
-
         const blob = await res.blob();
-
         const storage = getStorage();
         const fileRef = ref(storage, `covers/${comic.id}.jpg`);
         await uploadBytes(fileRef, blob);
-
         firebaseImageUrl = await getDownloadURL(fileRef);
         console.log(`✅ Firebase image uploaded: ${firebaseImageUrl}`);
       } catch (err) {
@@ -40,6 +60,7 @@ export default function SaveButton({ comic, status }) {
       }
     }
 
+    // 5️⃣ SAVE everything
     const docRef = doc(db, 'users', user.uid, 'savedComics', comic.id.toString());
 
     await setDoc(docRef, {
@@ -48,6 +69,10 @@ export default function SaveButton({ comic, status }) {
       firebaseImage: firebaseImageUrl || null,
       savedAs: status,
       savedAt: new Date().toISOString(),
+      // 🔽 merged detail data
+      publisher: publisher || comic.publisher || "",
+      characters,
+      authors,
     });
 
     alert(`Saved to ${status}`);

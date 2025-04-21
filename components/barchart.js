@@ -1,7 +1,8 @@
+// BarChart.js
 import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
-import ComicTile from './comictile';
+import ComicTile from './ComicTile';
 import styles from '../styles/viewer.module.css';
 
 export default function BarChart({ filterBy = {} }) {
@@ -17,24 +18,21 @@ export default function BarChart({ filterBy = {} }) {
         const snapshot = await getDocs(colRef);
         let comics = snapshot.docs.map(doc => doc.data());
 
-        // Filter by savedAs (favourite, read, to-read)
         if (filterBy.field && filterBy.value && filterBy.field !== 'groupBy') {
           comics = comics.filter(c => c[filterBy.field] === filterBy.value);
         }
 
-        // Decide how to group: year (default), series, or author
         const groupBy = (comic) => {
           switch (filterBy.groupBy) {
             case 'series':
               return comic.volume?.name || 'Unknown Series';
             case 'author':
-              return comic.person_credits?.split(',')[0]?.trim() || 'Unknown Author';
+              return comic.authors?.[0] || 'Unknown Author'; // 🔥 fix for array-based authors
             default:
               return comic.cover_date?.split('-')[0] || 'Unknown Year';
           }
         };
 
-        // Group the comics
         const grouped = {};
         comics.forEach((comic) => {
           const key = groupBy(comic);
@@ -42,7 +40,6 @@ export default function BarChart({ filterBy = {} }) {
           grouped[key].push(comic);
         });
 
-        // Sort keys (descending for year, ascending for series/author)
         const sorted = Object.fromEntries(
           Object.entries(grouped).sort((a, b) => {
             const isYear = /^\d{4}$/.test(a[0]);
@@ -62,11 +59,11 @@ export default function BarChart({ filterBy = {} }) {
   return (
     <div className={styles.viewerWrapper}>
       {Object.entries(groupedComics).map(([group, comics]) => (
-        <section key={group} className={styles.yearSection}>
-          <h2 className={styles.yearLabel}>{group}</h2>
+        <section key={group} className={styles.barRow}>
+          <div className={styles.groupLabel}>{group}</div>
           <div className={styles.coverRow}>
             {comics.map((comic, i) => (
-              <ComicTile key={i} comic={comic} />
+              <ComicTile key={i} comic={comic} small />
             ))}
           </div>
         </section>

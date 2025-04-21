@@ -5,7 +5,7 @@ import ComicHunt from '../components/comichunt';
 import ComicTile from '../components/ComicTile';
 import styles from '../styles/ComicTile.module.css';
 
-const PAGE_SIZE = 30;
+const PAGE_SIZE = 50;
 
 export default function Search() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function Search() {
   const [error, setError] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
-  const page = parseInt(pageQuery || '0', 10); // 0-indexed in UI, but +1 for ComicVine
+  const page = parseInt(pageQuery || '1', 10); // ComicVine search uses 1-indexing
 
   useEffect(() => {
     if (!q) return;
@@ -29,18 +29,19 @@ export default function Search() {
 
       try {
         const res = await fetch(
-          `/api/proxy?query=${encodeURIComponent(q)}&page=${page + 1}&limit=${PAGE_SIZE}`
+          `/api/proxy?resource=search&query=${encodeURIComponent(q)}&limit=${PAGE_SIZE}&page=${page}`
         );
         const data = await res.json();
 
         if (!data.results || data.results.length === 0) {
           setNotFound(true);
         } else {
-          const filtered = data.results.filter((comic) =>
-            comic.issue_number &&
-            comic.image?.original_url &&
-            !comic.image.original_url.includes('blank') &&
-            !/volume|tpb|hardcover|graphic/i.test(comic.name || '')
+          const filtered = data.results.filter(
+            (comic) =>
+              comic.issue_number &&
+              comic.image?.original_url &&
+              !comic.image.original_url.includes('blank') &&
+              !/volume|tpb|hardcover|graphic/i.test(comic.name || '')
           );
           setResults(filtered);
           setTotalResults(data.number_of_total_results || 0);
@@ -60,7 +61,7 @@ export default function Search() {
     e.preventDefault();
     const query = e.target.query.value.trim();
     if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}&page=0`);
+      router.push(`/search?q=${encodeURIComponent(query)}&page=1`);
     }
   };
 
@@ -78,7 +79,7 @@ export default function Search() {
       <main>
         {loading && (
           <div id="loading">
-            <img src="/images/giphy.gif" alt="loading" />
+            <img src="/images/Ellipsis-1.3s-248px.gif" alt="loading" />
           </div>
         )}
 
@@ -107,20 +108,30 @@ export default function Search() {
             </section>
 
             <div style={{ textAlign: 'center', margin: '2rem' }}>
-              <button
-                onClick={() => handlePageChange(Math.max(0, page - 1))}
-                disabled={page === 0}
-              >
+              <button onClick={() => handlePageChange(1)} disabled={page === 1}>
+                ⏮ First
+              </button>
+
+              <button onClick={() => handlePageChange(Math.max(1, page - 1))} disabled={page === 1}>
                 ◀ Prev
               </button>
+
               <span style={{ margin: '0 1rem' }}>
-                Page {page + 1} of {totalPages}
+                Page {page} of {totalPages}
               </span>
+
               <button
-                onClick={() => handlePageChange(Math.min(totalPages - 1, page + 1))}
-                disabled={page >= totalPages - 1}
+                onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
+                disabled={page >= totalPages}
               >
                 Next ▶
+              </button>
+
+              <button
+                onClick={() => handlePageChange(totalPages)}
+                disabled={page >= totalPages}
+              >
+                Last ⏭
               </button>
             </div>
           </>

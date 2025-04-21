@@ -4,25 +4,24 @@ export default async function handler(req, res) {
   const {
     resource = "search",
     query = "",
-    limit = 10,
-    offset = 0,
+    limit = "10",
+    offset = "0",
     filter = "",
     sort = "",
     field_list = "",
     api_detail_url = "",
+    page = "",
   } = req.query;
 
-  const API_KEY = "de2d10e13b5fca21fdf1b9c321676937e104e57b"; //  keep this safe!
+  const API_KEY = process.env.COMICVINE_API_KEY; // Replace with your env var
   let baseUrl;
 
   const params = {
     api_key: API_KEY,
     format: "json",
     limit,
-    offset,
   };
 
-  // Use api_detail_url directly if passed
   if (api_detail_url) {
     try {
       const detailRes = await axios.get(api_detail_url, {
@@ -40,13 +39,11 @@ export default async function handler(req, res) {
     }
   }
 
-  // Handle full resource paths like "person/4040-12345"
   if (resource.includes("/")) {
     baseUrl = `https://comicvine.gamespot.com/api/${resource}/`;
   } else {
     baseUrl = `https://comicvine.gamespot.com/api/${resource}/`;
 
-    // Default useful fields for most endpoints
     const defaultFields = [
       "id",
       "name",
@@ -61,17 +58,20 @@ export default async function handler(req, res) {
       "person_credits",
       "concept_credits",
       "publisher",
-      "issues", // includes issues they worked on
+      "issues",
     ].join(",");
 
     params.field_list = field_list || defaultFields;
+
     if (resource === "search") {
       if (!query) return res.status(400).json({ error: "Query is required for search." });
       params.query = query;
       params.resources = "issue";
+      if (page) params.page = page;
     } else {
       if (filter) params.filter = filter;
       if (sort) params.sort = sort;
+      params.offset = offset;
     }
   }
 

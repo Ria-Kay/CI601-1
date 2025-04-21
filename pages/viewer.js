@@ -1,29 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BarChart from '../components/barchart';
 import ComicHunt from '../components/comichunt';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import styles from '../styles/viewer.module.css';
 
 export default function ViewerPage() {
   const [savedAs, setSavedAs] = useState('all');
   const [groupBy, setGroupBy] = useState('year');
+  const [zoom, setZoom] = useState(100);
+
+  const zoomLevels = [50, 75, 100, 125, 150];
 
   const filterProps = {
     ...(savedAs !== 'all' && { field: 'savedAs', value: savedAs }),
     groupBy,
   };
 
+  // 🔁 Enable ctrl+scroll zoom
+  useEffect(() => {
+    const handleWheelZoom = (e) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+        setZoom((prevZoom) => {
+          const newZoom = prevZoom + (e.deltaY < 0 ? 10 : -10);
+          return Math.max(50, Math.min(200, newZoom));
+        });
+      }
+    };
+
+    window.addEventListener('wheel', handleWheelZoom, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheelZoom);
+  }, []);
+
   return (
     <main>
-      <div>
       <ComicHunt />
       <Header />
-      </div>
       <h1>Comic Viewer</h1>
 
-      {/* Filter dropdowns */}
-   
-        <div className='variables'>
+      <div className="variables">
         <select onChange={(e) => setSavedAs(e.target.value)} value={savedAs}>
           <option value="all">All Comics</option>
           <option value="favourite">Favourites</option>
@@ -38,11 +54,29 @@ export default function ViewerPage() {
         </select>
       </div>
 
-      {/* Chart */}
-      <BarChart filterBy={filterProps} />
+      <div className={styles.zoomControls}>
+        {zoomLevels.map((z) => (
+          <button
+            key={z}
+            onClick={() => setZoom(z)}
+            className={zoom === z ? styles.activeZoom : ''}
+          >
+            {z}%
+          </button>
+        ))}
+      </div>
 
-    
+      <div
+        style={{
+          transform: `scale(${zoom / 100})`,
+          transformOrigin: 'top left',
+          transition: 'transform 0.2s ease-in-out',
+        }}
+      >
+        <BarChart filterBy={filterProps} />
+      </div>
 
+      <Footer />
     </main>
   );
 }

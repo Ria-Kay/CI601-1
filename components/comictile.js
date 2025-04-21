@@ -15,7 +15,6 @@ export default function ComicTile({ comic, small = false }) {
     site_detail_url,
     description,
     cover_date,
-    associated_images = [],
     api_detail_url,
     savedAs,
   } = comic;
@@ -27,6 +26,7 @@ export default function ComicTile({ comic, small = false }) {
   const [selectedCover, setSelectedCover] = useState(defaultCover);
   const [showPopup, setShowPopup] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(savedAs || null);
+  const [variantImages, setVariantImages] = useState([]);
 
   useEffect(() => {
     const escHandler = (e) => {
@@ -35,6 +35,40 @@ export default function ComicTile({ comic, small = false }) {
     window.addEventListener('keydown', escHandler);
     return () => window.removeEventListener('keydown', escHandler);
   }, []);
+
+  useEffect(() => {
+    if (!showPopup) return;
+
+    const fetchDetailedData = async () => {
+      let detailUrl = api_detail_url;
+      if (!detailUrl && site_detail_url) {
+        const match = site_detail_url.match(/\/(4000-\d+)\/*/);
+        if (match) {
+          detailUrl = `https://comicvine.gamespot.com/api/issue/${match[1]}/`;
+        }
+      }
+
+      if (!detailUrl) {
+        console.warn('No detail URL found');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/proxy?api_detail_url=${encodeURIComponent(detailUrl)}`);
+        const data = await res.json();
+        const associated_images = data.results?.associated_images || [];
+        console.log(" associated_images:", associated_images);
+        console.log("image:", image);
+        const all = [image, ...associated_images];
+        console.log("All carousel images:", all);
+        setVariantImages(all);
+      } catch (err) {
+        console.error(' Failed to fetch variant data:', err);
+      }
+    };
+
+    fetchDetailedData();
+  }, [showPopup]);
 
   const uploadCoverImage = async () => {
     try {
@@ -53,47 +87,10 @@ export default function ComicTile({ comic, small = false }) {
 
   const handleSave = async (status) => {
     if (!auth.currentUser) return showToast('Please log in to save comics.', 'warning');
-
     if (status === 'to-read' && ['read', 'favourite'].includes(currentStatus)) {
       showToast("Already marked as read. Can't mark as to-read.", 'info');
       return;
     }
-
-    let detailUrl = api_detail_url;
-    if (!detailUrl && site_detail_url) {
-      const match = site_detail_url.match(/\/(4000-\d+)\/*/);
-      if (match) {
-        detailUrl = `https://comicvine.gamespot.com/api/issue/${match[1]}/`;
-      } else {
-        console.error('Could not extract issue ID.');
-        return;
-      }
-    }
-
-    let detailedData = {};
-    try {
-      const res = await fetch(`/api/proxy?api_detail_url=${encodeURIComponent(detailUrl)}`);
-      const data = await res.json();
-      detailedData = data.results || {};
-    } catch (err) {
-      console.error('Failed to fetch detailed data', err);
-    }
-
-    let publisher = detailedData.volume?.publisher?.name || '';
-    if (!publisher && detailedData.volume?.api_detail_url) {
-      try {
-        const volRes = await fetch(`/api/proxy?api_detail_url=${encodeURIComponent(detailedData.volume.api_detail_url)}`);
-        const volData = await volRes.json();
-        publisher = volData.results?.publisher?.name || '';
-      } catch (err) {
-        console.warn('Failed to fetch volume publisher', err);
-      }
-    }
-
-    const characters = detailedData.character_credits?.map((char) => char.name) || [];
-    const authors = detailedData.person_credits
-      ?.filter((p) => /writer|author/i.test(p.role || ''))
-      .map((p) => p.name) || [];
 
     const firebaseUrl = await uploadCoverImage();
 
@@ -103,9 +100,6 @@ export default function ComicTile({ comic, small = false }) {
       firebaseImage: firebaseUrl,
       savedAs: status === 'favourite' ? 'favourite' : status,
       savedAt: new Date().toISOString(),
-      publisher,
-      characters,
-      authors,
     };
 
     try {
@@ -122,14 +116,9 @@ export default function ComicTile({ comic, small = false }) {
 
   const handleUnfavourite = async () => {
     if (!auth.currentUser) return;
-
     try {
       const docRef = doc(db, 'users', auth.currentUser.uid, 'savedComics', comic.id.toString());
-      await setDoc(docRef, {
-        ...comic,
-        savedAs: 'read',
-        savedAt: new Date().toISOString(),
-      });
+      await setDoc(docRef, { ...comic, savedAs: 'read', savedAt: new Date().toISOString() });
       setCurrentStatus('read');
       showToast('Removed from favourites.', 'info');
       setShowPopup(false);
@@ -140,14 +129,9 @@ export default function ComicTile({ comic, small = false }) {
 
   const handleUnread = async () => {
     if (!auth.currentUser) return;
-
     try {
       const docRef = doc(db, 'users', auth.currentUser.uid, 'savedComics', comic.id.toString());
-      await setDoc(docRef, {
-        ...comic,
-        savedAs: 'to-read',
-        savedAt: new Date().toISOString(),
-      });
+      await setDoc(docRef, { ...comic, savedAs: 'to-read', savedAt: new Date().toISOString() });
       setCurrentStatus('to-read');
       showToast('Marked as unread.', 'info');
       setShowPopup(false);
@@ -179,7 +163,6 @@ export default function ComicTile({ comic, small = false }) {
       </div>
     );
   };
-  
 
   const popup = (
     <div className={styles.popupOverlay} onClick={() => setShowPopup(false)}>
@@ -207,11 +190,11 @@ export default function ComicTile({ comic, small = false }) {
           <p dangerouslySetInnerHTML={{ __html: description || 'No description available.' }}></p>
           <a href={site_detail_url} target="_blank" rel="noreferrer">View on ComicVine</a>
 
-          {associated_images.length > 0 && (
+          {variantImages.length > 0 && (
             <div className={styles.variantCarousel}>
               <h4>Choose a Cover Variant:</h4>
               <div className={styles.variantTrack}>
-                {[image, ...associated_images].map((img, index) => {
+                {variantImages.map((img, index) => {
                   const url = img.original_url || img;
                   return (
                     <img

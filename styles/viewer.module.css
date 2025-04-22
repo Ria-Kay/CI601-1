@@ -23,28 +23,6 @@
     padding-left: 1rem;
   }
   
-  .coverRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: flex-end;
-  }
-  
-  .coverRow > div {
-    width: 100px;
-    height: 140px;
-    transition: transform 0.2s ease;
-  }
-  
-  .coverRow > div:hover {
-    transform: scale(1.08);
-  }
-  
-  .barRow {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
   
   .groupLabel {
     min-width: 150px;
@@ -55,12 +33,7 @@
     color: white;
   }
   
-  .coverRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
+  
   .zoomControls {
     text-align: center;
     margin: 1rem 0;
@@ -82,3 +55,54 @@
     background: #00cfff;
   }
   
+  
+  .labelCol {
+    flex: 0 0 180px; /* fixed width label column */
+    padding-right: 1rem;
+  }
+  
+  .coverCol {
+    flex: 1;
+    overflow-x: auto;
+  }
+  
+  .groupLabel {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+    max-width: 160px;
+    word-wrap: break-word;
+  }
+  
+/* FIXED CCSSSSSS */
+
+
+.barRow {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+/* Text label column */
+.groupLabel {
+  max-width: 180px;
+  min-width: 120px;
+  flex-shrink: 0;
+  word-break: break-word;
+  white-space: normal;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+  padding-top: 0.3rem;
+}
+
+/* Tile container (right side of bar row) */
+.coverRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+  flex: 1; /* Take all remaining space */
+}

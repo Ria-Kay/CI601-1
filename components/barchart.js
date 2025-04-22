@@ -66,14 +66,17 @@ export default function BarChart({ filterBy = {} }) {
     <div className={styles.viewerWrapper}>
       {Object.entries(groupedComics).map(([group, comics]) => (
         <section key={group} className={styles.barRow}>
+        <div className={styles.labelCol}>
           <div className={styles.groupLabel}>{group}</div>
+        </div>
+        <div className={styles.coverCol}>
           <div className={styles.coverRow}>
             {comics.map((comic, i) => (
-              <ComicTile key={comic.id} comic={comic} small 
-              onChange={handleRefresh} />
+              <ComicTile key={comic.id} comic={comic} onChange={handleRefresh} />
             ))}
           </div>
-        </section>
+        </div>
+      </section>
       ))}
     </div>
   );

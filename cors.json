@@ -2,7 +2,7 @@
     {
       "origin": ["http://localhost:3000",
       "https://ci-601-1-1.vercel.app"],
-      "method": ["GET"],
+      "method": ["GET", "POST", "HEAD"],      
       "maxAgeSeconds": 3600,
       "responseHeader": ["Content-Type"]
     }

@@ -4,7 +4,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import * as THREE from 'three';
-import ComicTile from '../components/ComicTiletemp';
+import ComicTile from '../components/ComicTile';
 import Header from '../components/Header';
 
 const ForceGraph3D = dynamic(() => import('react-force-graph-3d'), { ssr: false });

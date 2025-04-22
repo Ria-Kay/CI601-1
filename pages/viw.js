@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ComicTile from '../components/comictile';
+import ComicTile from '../components/ComicTile';
 import styles from '../styles/viewer.module.css';
 import Header from '../components/Header';
 export default function Viewer() {

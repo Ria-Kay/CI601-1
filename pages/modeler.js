@@ -35,73 +35,83 @@ export default function ModelerPage() {
   useEffect(() => {
     if (!comics.length) return;
 
-    const groupMap = {};
-    const nodes = comics.map((comic) => {
-      let groupKey;
-      switch (filterType) {
-        case 'year':
-          groupKey = comic.cover_date?.slice(0, 4);
-          break;
-        case 'series':
-          groupKey = comic.volume?.name;
-          break;
-        case 'publisher':
-          groupKey = comic.publisher;
-          break;
-        case 'genre':
-          groupKey = (comic.genres && comic.genres[0]) || 'Unknown';
-          break;
-        case 'characters':
-          groupKey = (comic.characters && comic.characters[0]) || 'Unknown';
-          break;
-        case 'authors':
-          groupKey = (comic.authors && comic.authors[0]) || 'Unknown';
-          break;
-        default:
-          groupKey = 'Unknown';
-      }
+    const colorMap = {};
+    const nodes = [];
+    const links = [];
 
-      if (!groupMap[groupKey]) {
-        groupMap[groupKey] = getRandomColor();
+    const addColor = (key) => {
+      if (!colorMap[key]) {
+        colorMap[key] = getRandomColor();
       }
+      return colorMap[key];
+    };
 
-      return {
-        id: comic.id,
+    comics.forEach((comic) => {
+      const comicNode = {
+        id: `comic-${comic.id}`,
         image: comic.firebaseImage || comic.preferredCover,
         comic,
-        groupKey,
-        color: groupMap[groupKey]
+        type: 'comic',
+        groupKey: comic.id,
+        color: '#ffffff', // default, overridden by connections
       };
+      nodes.push(comicNode);
+
+      let groupValues = [];
+
+      switch (filterType) {
+        case 'year':
+          groupValues = [comic.cover_date?.slice(0, 4) || 'Unknown Year'];
+          break;
+        case 'series':
+          groupValues = [comic.volume?.name || 'Unknown Series'];
+          break;
+        case 'publisher':
+          groupValues = [comic.publisher || 'Unknown Publisher'];
+          break;
+        case 'genre':
+          groupValues = comic.genres?.length ? comic.genres : ['Unknown Genre'];
+          break;
+        case 'characters':
+          groupValues = comic.characters?.length ? comic.characters : ['Unknown Character'];
+          break;
+        case 'authors':
+          groupValues = comic.authors?.length ? comic.authors : ['Unknown Author'];
+          break;
+        default:
+          groupValues = ['Unknown'];
+      }
+
+      groupValues.forEach((group) => {
+        const color = addColor(group);
+        const groupNodeId = `${filterType}-${group}`;
+
+        // If not already added
+        if (!nodes.find((n) => n.id === groupNodeId)) {
+          nodes.push({
+            id: groupNodeId,
+            name: group,
+            type: 'group',
+            color,
+          });
+        }
+
+        links.push({
+          source: groupNodeId,
+          target: comicNode.id,
+          color,
+        });
+
+        // Assign comic color to match its main group (first groupValue)
+        if (groupValues[0] === group) {
+          comicNode.color = color;
+        }
+      });
     });
 
-    const links = generateLinks(nodes, filterType);
-    setGroupColors(groupMap);
+    setGroupColors(colorMap);
     setGraphData({ nodes, links });
   }, [comics, filterType]);
-
-  const generateLinks = (nodes, type) => {
-    const links = [];
-    const groups = {};
-
-    nodes.forEach((node) => {
-      const key = node.groupKey;
-      if (!key) return;
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(node);
-    });
-
-    Object.values(groups).forEach((group) => {
-      for (let i = 0; i < group.length - 1; i++) {
-        links.push({
-          source: group[i].id,
-          target: group[i + 1].id,
-          color: group[i].color
-        });
-      }
-    });
-
-    return links;
-  };
 
   const getRandomColor = () => {
     const hue = Math.floor(Math.random() * 360);
@@ -163,6 +173,23 @@ export default function ModelerPage() {
       <ForceGraph3D
         graphData={graphData}
         nodeThreeObject={(node) => {
+          // CHARACTER / GROUP NODES — label only
+          if (node.type === 'group') {
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = node.color || '#ffffff';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(node.name, 128, 128);
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(16, 8, 1);
+            return sprite;
+          }
+
+          // COMIC NODES — with glow
           const group = new THREE.Group();
 
           const texture = new THREE.TextureLoader().load(node.image);
@@ -179,7 +206,8 @@ export default function ModelerPage() {
           glowCanvas.width = glowCanvas.height = 128;
           const ctx = glowCanvas.getContext('2d');
           const gradient = ctx.createRadialGradient(64, 64, 10, 64, 64, 64);
-          gradient.addColorStop(0, node.color);
+          const safeColor = node.color || '#ffffff';
+          gradient.addColorStop(0, safeColor);
           gradient.addColorStop(1, 'transparent');
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, 128, 128);
@@ -202,9 +230,13 @@ export default function ModelerPage() {
         }}
         linkColor={(link) => link.color || '#ffffff'}
         linkWidth={1}
-        onNodeClick={(node) => setSelectedComic(node.comic)}
+        onNodeClick={(node) => {
+          if (node.comic) {
+            setSelectedComic(node.comic);
+          }
+        }}
         enableNodeHover={false}
-        nodeLabel={(node) => (showLabels ? node.comic.name || `#${node.comic.issue_number}` : '')}
+        nodeLabel={(node) => showLabels ? (node.comic?.name || node.name || '') : ''}
       />
     </div>
   );

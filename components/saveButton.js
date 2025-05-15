@@ -8,7 +8,7 @@ export default function SaveButton({ comic, status }) {
   const handleSave = async () => {
     if (!user) return alert('Please log in to save comics.');
 
-    // 1️⃣ GET DETAILED COMIC INFO
+    // fethc detail
     let detailedData = {};
     try {
       const detailUrl = comic.api_detail_url;
@@ -19,7 +19,7 @@ export default function SaveButton({ comic, status }) {
       console.error("⚠️ Failed to fetch detailed comic info:", err);
     }
 
-    // 2️⃣ OPTIONAL: Fetch volume publisher if needed
+    // fetch publisher
     let publisher = "";
     try {
       if (detailedData.volume?.api_detail_url) {
@@ -31,13 +31,13 @@ export default function SaveButton({ comic, status }) {
       console.warn("📦 Failed to fetch volume publisher:", err);
     }
 
-    // 3️⃣ EXTRACT credits
+    // get credits
     const characters = detailedData.character_credits?.map((char) => char.name) || [];
     const authors = detailedData.person_credits
       ?.filter((p) => /writer|author/i.test(p.role || ""))
       .map((p) => p.name) || [];
 
-    // 4️⃣ UPLOAD image to Firebase if needed
+    // send image to Firebase if needed
     let firebaseImageUrl = comic.firebaseImage;
     const imageToUpload =
       comic.preferredCover ||
@@ -60,7 +60,7 @@ export default function SaveButton({ comic, status }) {
       }
     }
 
-    // 5️⃣ SAVE everything
+    
     const docRef = doc(db, 'users', user.uid, 'savedComics', comic.id.toString());
 
     await setDoc(docRef, {
@@ -69,7 +69,6 @@ export default function SaveButton({ comic, status }) {
       firebaseImage: firebaseImageUrl || null,
       savedAs: status,
       savedAt: new Date().toISOString(),
-      // 🔽 merged detail data
       publisher: publisher || comic.publisher || "",
       characters,
       authors,

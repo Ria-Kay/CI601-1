@@ -41,15 +41,15 @@ export default function Home() {
             <div className="image-wrapper">
               <Image
                 src="/images/AH2.svg"
-                alt="Comic Character - Agatha Harkness"
+                alt="Marvel Comic Character - Agatha Harkness"
                 fill
               />
             </div>
 
             <div className="image-wrapper">
               <Image
-                src="/images/indexdp.png"
-                alt="Image of the Your Comics page"
+                src="/images/yourcomics.png"
+                alt="Image of the Comics page users can explore"
                 fill
               />
             </div>

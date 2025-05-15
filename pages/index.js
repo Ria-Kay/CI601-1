@@ -85,6 +85,9 @@ export default function Home() {
               <h3>
                 Whether you're tracking individual issues, organizing by series, or tagging storage locations like short and long boxes, ComicHunt is designed to reflect the way you collect in the real world. You can even flag missing issues or curate your own custom groups to keep everything in order.
               </h3>
+               <p>
+                    This web appliacation was created to allow you to explore your comics through visual components, focusing on the artwork first instead of just providing you with numerical analysis, once you've saved some comics head into the modeler and viewer to begin exploring your collection!
+                                  </p>
             </div>
 
             <div className="image-wrapper">
@@ -116,6 +119,9 @@ export default function Home() {
               <h3>
                 Whether you're tracking individual issues, organizing by series, or tagging storage locations like short and long boxes, ComicHunt is designed to reflect the way you collect in the real world. You can even flag missing issues or curate your own custom groups to keep everything in order.
               </h3>
+              <p>
+                Whatever your favorite comics are you can use our search bar or explore page at the header to find what you read. Just click on the comics you want to view their information and save to your hearts content!
+              </p>
             </div>
 
             <div className="image-wrapper">

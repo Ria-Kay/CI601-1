@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     page = "",
   } = req.query;
 
-  const API_KEY = process.env.COMICVINE_API_KEY; // Replace with your env var
+  const API_KEY = de2d10e13b5fca21fdf1b9c321676937e104e57b; // Replace with  env var??
   let baseUrl;
 
   const params = {

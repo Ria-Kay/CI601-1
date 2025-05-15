@@ -17,7 +17,7 @@ export default function ViewerPage() {
     groupBy,
   };
 
-  // 🔁 Enable ctrl+scroll zoom
+  // Enable ctrl+scroll zoom so ppl can interqct more 
   useEffect(() => {
     const handleWheelZoom = (e) => {
       if (e.ctrlKey) {

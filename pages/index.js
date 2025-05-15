@@ -153,6 +153,7 @@ export default function Home() {
               <h3>
                 Welcome our latest comic hunters to the community! Sign up and see who else shares your favorite series, or discover what your fellow fans are reading.
               </h3>
+              <p>This websites authentication system is powered by Firebase! Rest well knwing your information is safe and secure.</p>
             </div>
 
             <div className="image-wrapper">

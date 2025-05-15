@@ -36,7 +36,6 @@ const Header = () => {
           {user ? (
             <>
               
-              <Link href="/visualiser">Your Data</Link>
               <Link href="/viewer">Comic Viewer</Link>
               <Link href="/profile">Profile</Link>
 

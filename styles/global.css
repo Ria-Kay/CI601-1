@@ -24,6 +24,13 @@ header {
     z-index: 1000;
 }
 
+.mobileToggle {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: white;
+  margin-right: 1rem;
+}
 
 .headerbox {
     display: flex; 
@@ -42,6 +49,46 @@ header {
 
 .navigation a:hover {
     color: #0070f3; /* Hover effect */
+}
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .mobileToggle {
+    display: block;
+  }
+
+  .navigation {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #1c1a29;
+    padding: 1rem 0;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    z-index: 999;
+  }
+
+  .navigation.open {
+    display: flex;
+  }
+
+  .headerbox {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lookup {
+    width: 100%;
+  }
+
+  .searchbar {
+    max-width: 100%;
+  }
 }
 
 /* Search bar styles */

@@ -16,9 +16,9 @@ export default function Footer() {
       <p>
         Nightwing character images sourced from Detective Comics, 2025.
       </p>
-      <P>
+      <p>
         Comic hunt was built as a part of this students final year project, all materials used are used for the purpose of eduction only.
-      </P>
+      </p>
 
       <p>
         https://hype4.academy/tools/glassmorphism-generator

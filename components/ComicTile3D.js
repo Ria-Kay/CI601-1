@@ -29,7 +29,7 @@ export default function ComicTile3D({ comic, position }) {
         const loadedTexture = await loader.loadAsync(blobUrl);
         setTexture(loadedTexture);
       } catch (err) {
-        console.error('Failed to load texture:', err);
+        console.error('Failed to the load texture:', err);
       }
     };
 

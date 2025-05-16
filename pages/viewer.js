@@ -37,7 +37,6 @@ export default function ViewerPage() {
     <main>
       <ComicHunt />
       <Header />
-      <h1>Comic Viewer</h1>
 
       <div className="variables">
         <select onChange={(e) => setSavedAs(e.target.value)} value={savedAs}>

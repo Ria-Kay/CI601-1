@@ -312,3 +312,31 @@ select{
 
 
 }
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #ccc;
+  background-color: #0a0a1a;
+}
+
+.footer a {
+  color: #3399ff;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-section {
+  margin-top: 0.5rem;
+}
+
+.footer-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0.25rem 0;
+}

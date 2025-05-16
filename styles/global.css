@@ -321,7 +321,9 @@ select{
   color: #ccc;
   background-color: #0a0a1a;
 }
-
+.footer p{
+font-size: 8px;
+}
 .footer a {
   color: #3399ff;
   text-decoration: none;

@@ -4,7 +4,7 @@ import styles from '../styles/viewer.module.css';
 import Header from '../components/Header';
 export default function Viewer() {
   const [groupedComics, setGroupedComics] = useState({});
-
+//s NOT USED
   useEffect(() => {
     async function fetchComics() {
       try {

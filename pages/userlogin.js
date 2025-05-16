@@ -16,3 +16,4 @@ export default function PeoplePage() {
     </div>
   );
 }
+//NOT USEDDDD!!

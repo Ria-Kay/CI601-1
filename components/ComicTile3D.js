@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { TextureLoader } from 'three';
 import ComicTile from './ComicTile';
 import { Html } from '@react-three/drei';
-
+//NOT USEDDD IT WAS POINTLESSS
 export default function ComicTile3D({ comic, position }) {
   const [showUI, setShowUI] = useState(false);
   const [texture, setTexture] = useState(null);

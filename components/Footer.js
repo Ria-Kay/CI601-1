@@ -2,29 +2,45 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer" style={{ textAlign: 'center', padding: '2rem', fontSize: '0.9rem' }}>
       <p>© {new Date().getFullYear()} ComicHunt. All rights reserved.</p>
+
       <p>
-        Built with ComicVine API, to source all comic metadata. https://comicvine.gamespot.com/api/
-      </p>
-      <p>
-        Built By Ria Kumar
-      </p>
-      <p>
-        Icons from Icons8, Agatha Harkness character images sourced from Marvel Studios, 2024.
-      </p>
-      <p>
-        Nightwing character images sourced from Detective Comics, 2025.
-      </p>
-      <p>
-        Comic hunt was built as a part of this students final year project, all materials used are used for the purpose of eduction only.
+        Built using the <a href="https://comicvine.gamespot.com/api/" target="_blank" rel="noopener noreferrer">ComicVine API</a> for comic metadata.
       </p>
 
       <p>
-        https://hype4.academy/tools/glassmorphism-generator
-        https://github.com/vasturiano/3d-force-graph?tab=MIT-1-ov-file
+        Developed by Ria Kumar as part of a final-year university project.
       </p>
 
+      <p>
+        All images and materials are used for educational purposes only.
+      </p>
+
+      <div style={{ marginTop: '1rem' }}>
+        <strong>Credits:</strong>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <li>Icons from <a href="https://icons8.com" target="_blank" rel="noopener noreferrer">Icons8</a></li>
+          <li>Agatha Harkness images © Marvel Studios, 2024</li>
+          <li>Nightwing images © Detective Comics, 2025</li>
+        </ul>
+      </div>
+
+      <div style={{ marginTop: '1rem' }}>
+        <strong>Resources:</strong>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <li>
+            <a href="https://hype4.academy/tools/glassmorphism-generator" target="_blank" rel="noopener noreferrer">
+              Glassmorphism Generator
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/vasturiano/3d-force-graph" target="_blank" rel="noopener noreferrer">
+              3D Force Graph by Vasturiano
+            </a>
+          </li>
+        </ul>
+      </div>
     </footer>
   );
 }

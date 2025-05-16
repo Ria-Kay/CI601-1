@@ -1,4 +1,3 @@
-// pages/api/proxy-image.js
 export default async function handler(req, res) {
     const { imageUrl } = req.query;
   

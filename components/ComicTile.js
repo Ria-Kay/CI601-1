@@ -48,22 +48,16 @@ export default function ComicTile({ comic, small = false }) {
         }
       }
 
-      if (!detailUrl) {
-        console.warn('No detail URL found');
-        return;
-      }
+      if (!detailUrl) return;
 
       try {
         const res = await fetch(`/api/proxy?api_detail_url=${encodeURIComponent(detailUrl)}`);
         const data = await res.json();
         const associated_images = data.results?.associated_images || [];
-        console.log(" associated_images:", associated_images);
-        console.log("image:", image);
         const all = [image, ...associated_images];
-        console.log("All carousel images:", all);
         setVariantImages(all);
       } catch (err) {
-        console.error(' Failed to fetch variant data:', err);
+        console.error('Failed to fetch variant data:', err);
       }
     };
 
@@ -153,13 +147,14 @@ export default function ComicTile({ comic, small = false }) {
     }
   };
 
-  const TagIcons = () => {
+  const TagLabels = () => {
     if (!currentStatus) return null;
+
     return (
-      <div className={styles.tagRow}>
-        {currentStatus === 'favourite' && <img src="/images/6.svg" alt="Favourite" className={styles.tagIcon} />}
-        {['read', 'favourite'].includes(currentStatus) && <img src="/images/6.svg" alt="Read" className={styles.tagIcon} />}
-        {currentStatus === 'to-read' && <img src="/images/6.svg" alt="To Read" className={styles.tagIcon} />}
+      <div className={styles.tagLabelRow}>
+        {currentStatus === 'favourite' && <div className={styles.favTag}>Favourite</div>}
+        {currentStatus === 'read' && <div className={styles.readTag}>Read</div>}
+        {currentStatus === 'to-read' && <div className={styles.toReadTag}>To-Read</div>}
       </div>
     );
   };
@@ -169,23 +164,17 @@ export default function ComicTile({ comic, small = false }) {
       <div className={styles.popupBox} onClick={(e) => e.stopPropagation()}>
         <div className={styles.actionTopRight}>
           {currentStatus === 'favourite' && (
-            <button onClick={handleUnfavourite} className={styles.cornerButton}>
-              <img src="/images/fav.svg" alt="Unfavourite" />
-            </button>
+            <button onClick={handleUnfavourite} className={styles.cornerButton}>Unfavourite</button>
           )}
           {['read', 'favourite'].includes(currentStatus) && (
-            <button onClick={handleUnread} className={styles.cornerButton}>
-              <img src="/images/read.svg" alt="Mark Unread" />
-            </button>
+            <button onClick={handleUnread} className={styles.cornerButton}>Mark as To-Read</button>
           )}
-          <button onClick={handleRemove} className={styles.cornerButton}>
-            <img src="/images/trash.svg" alt="Remove" />
-          </button>
+          <button onClick={handleRemove} className={styles.cornerButton}>Delete</button>
         </div>
 
         <img src={selectedCover} alt={title} className={styles.popupImage} />
         <div className={styles.popupInfo}>
-          <TagIcons />
+          <TagLabels />
           <h2>{title}</h2>
           <p dangerouslySetInnerHTML={{ __html: description || 'No description available.' }}></p>
           <a href={site_detail_url} target="_blank" rel="noreferrer">View on ComicVine</a>
@@ -231,7 +220,7 @@ export default function ComicTile({ comic, small = false }) {
         {defaultCover && <img className={styles.cover} src={defaultCover} alt={title} />}
         <div className={styles.preview}>
           <div className={styles.info}>
-            <TagIcons />
+            <TagLabels />
             <h3>{title}</h3>
             <p>Issue #{issue_number || '?'}</p>
             <p>{date}</p>
